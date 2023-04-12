@@ -10,23 +10,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "usuarios",uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario"}) })
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer usuario_id;
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Column(nullable = false, length = 50)
 	private String usuario;
 
 	@Column(nullable = false,length = 20)
@@ -41,7 +42,7 @@ public class Usuario {
 	private boolean esActivo;
 
 	@ManyToOne
-	@JoinColumn(name = "perfil_id")
+	@JoinColumn(name = "perfil_id", nullable = false)
 	private PerfilUsuario perilUsuario;
 
 	private boolean accesoDirecto;
