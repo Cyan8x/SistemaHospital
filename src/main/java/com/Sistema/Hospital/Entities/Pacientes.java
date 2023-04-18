@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -17,31 +16,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "usuarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario" }),
-		@UniqueConstraint(columnNames = { "dni" }) })
-public class Usuario {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "pacientes", uniqueConstraints = { @UniqueConstraint(columnNames = { "dni" }),
+		@UniqueConstraint(columnNames = { "email" }), @UniqueConstraint(columnNames = { "telefono" }) })
+public class Pacientes {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer usuario_id;
+	private Integer paciente_id;
 
 	@Column(nullable = false, length = 50)
-	private String usuario;
-
-	@Column(nullable = false, length = 50)
-	private String password;
-
-	@Column(nullable = false, length = 200)
 	private String nombres;
 
-	@Column(nullable = false, length = 200)
+	@Column(nullable = false, length = 50)
 	private String apellidos;
 
 	@Column(nullable = false, length = 8)
 	private String dni;
+
+	@Column(nullable = true, length = 200)
+	private String direccion;
 
 	@Column(nullable = true, length = 100)
 	private String email;
@@ -49,13 +46,7 @@ public class Usuario {
 	@Column(nullable = true, length = 10)
 	private String telefono;
 
-	private boolean esActivo;
-
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id", nullable = false)
-	private PerfilUsuario perilUsuario;
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "horario_id", referencedColumnName = "horario_id", nullable = false)
-	private HorarioUsuario horarioUsuario;
+	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false)
+	private EstadoAtencion estadoAtencion;
 }

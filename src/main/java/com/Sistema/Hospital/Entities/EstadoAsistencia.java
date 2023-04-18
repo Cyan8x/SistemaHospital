@@ -16,17 +16,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "perfil_usuario", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }) })
-public class PerfilUsuario {
+@Table(name = "estado_asistencia", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }) })
+public class EstadoAsistencia {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer perfil_id;
+	private Integer estado_asistencia_id;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 200)
 	private String nombre;
-
-	@Column(nullable = true, length = 200)
-	private String descripcion;
-
 }
