@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Sistema.Hospital.Dto.PacienteRequestDto;
+import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
 import com.Sistema.Hospital.Service.PacienteService;
 
 @RestController

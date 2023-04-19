@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto;
+package com.Sistema.Hospital.Dto.PacienteDto;
 
 import com.Sistema.Hospital.Entity.EstadoAtencion;
 

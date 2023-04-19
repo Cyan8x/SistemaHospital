@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto;
+package com.Sistema.Hospital.Dto.PacienteDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
