@@ -1,15 +1,18 @@
 package com.Sistema.Hospital.Entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.Length;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,12 +29,19 @@ public class Comentario {
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+	@NotNull
+	@NotEmpty
 	private Usuario usuario;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id", nullable = false)
+	@NotNull
+	@NotEmpty
 	private Paciente paciente;
 
 	@Column(nullable = false, length = 1000)
+	@NotNull
+	@NotEmpty
+	@Length(min = 1, max = 1000)
 	private String comentario;
 }
