@@ -31,13 +31,8 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public String createPaciente(PacienteRequestDto pacienteRequestDto) {
-		try {
-			pacienteRepository.save(mapToEntitySinModelMapper(pacienteRequestDto));
-			return "Paciente creado exitosamente";
-		} catch (Exception e) {
-			return "Ha sucedido un error: " + e.getMessage();
-		}
+	public void createPaciente(PacienteRequestDto pacienteRequestDto) {
+		pacienteRepository.save(mapToEntitySinModelMapper(pacienteRequestDto));
 	}
 
 	@Override
@@ -58,22 +53,20 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public String deletePacienteById(Integer id) {
+	public void deletePacienteById(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// RequestDto to Entity
 	private Paciente mapToEntity(PacienteRequestDto pacienteRequestDto) {
 		return mapper.map(pacienteRequestDto, Paciente.class);
 	}
-	
+
 	private Paciente mapToEntitySinModelMapper(PacienteRequestDto pacienteRequestDto) {
-		EstadoAtencion estadoAtencion = estadoAtencionRepository
-				.findById(pacienteRequestDto.getEstado_atencion_id())
+		EstadoAtencion estadoAtencion = estadoAtencionRepository.findById(pacienteRequestDto.getEstado_atencion_id())
 				.orElseThrow(() -> new ResourceNotFoundException("Estado Atencion", "id",
 						pacienteRequestDto.getEstado_atencion_id()));
-		
+
 		Paciente paciente = new Paciente();
 		paciente.setApellidos(pacienteRequestDto.getApellidos());
 		paciente.setDireccion(pacienteRequestDto.getDireccion());
@@ -81,9 +74,9 @@ public class PacienteServiceImpl implements PacienteService {
 		paciente.setEmail(pacienteRequestDto.getEmail());
 		paciente.setEstadoAtencion(estadoAtencion);
 		paciente.setNombres(pacienteRequestDto.getNombres());
-		//paciente.setPaciente_id(pacienteRequestDto.get());
+		// paciente.setPaciente_id(pacienteRequestDto.get());
 		paciente.setTelefono(pacienteRequestDto.getTelefono());
-				
+
 		return paciente;
 	}
 
