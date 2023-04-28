@@ -40,6 +40,5 @@ public class PacienteRequestDto {
 	private String telefono;
 	
 	@NotNull
-	@NotEmpty
 	private Integer estado_atencion_id;
 }

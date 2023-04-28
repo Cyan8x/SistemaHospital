@@ -66,6 +66,5 @@ public class Paciente {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false)
 	@NotNull
-	@NotEmpty
 	private EstadoAtencion estadoAtencion;
 }

@@ -10,7 +10,7 @@ import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
 import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
 import com.Sistema.Hospital.Entity.EstadoAtencion;
 import com.Sistema.Hospital.Entity.Paciente;
-import com.Sistema.Hospital.Exception.ResourceNotFoundException;
+import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Repository.EstadoAtencionRepository;
 import com.Sistema.Hospital.Repository.PacienteRepository;
 import com.Sistema.Hospital.Service.PacienteService;
@@ -42,8 +42,9 @@ public class PacienteServiceImpl implements PacienteService {
 
 	@Override
 	public PacienteResponseDto getPacienteById(Integer paciente_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapToDto(pacienteRepository.findById(paciente_id)
+				.orElseThrow(() -> new ResourceNotFound("Paciente", "id", paciente_id)));
+
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class PacienteServiceImpl implements PacienteService {
 
 	private Paciente mapToEntitySinModelMapper(PacienteRequestDto pacienteRequestDto) {
 		EstadoAtencion estadoAtencion = estadoAtencionRepository.findById(pacienteRequestDto.getEstado_atencion_id())
-				.orElseThrow(() -> new ResourceNotFoundException("Estado Atencion", "id",
+				.orElseThrow(() -> new ResourceNotFound("Estado Atencion", "id",
 						pacienteRequestDto.getEstado_atencion_id()));
 
 		Paciente paciente = new Paciente();

@@ -1,18 +1,24 @@
 package com.Sistema.Hospital.Controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
+import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
 import com.Sistema.Hospital.Service.PacienteService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/hospital/pacientes")
@@ -25,19 +31,22 @@ public class PacienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> createPaciente(@RequestBody PacienteRequestDto pacienteRequestDto) {
+	public ResponseEntity<String> createPaciente(@RequestBody @Valid PacienteRequestDto pacienteRequestDto,
+			BindingResult bindingResult) {
 
-		Map<String, String> respuesta = new HashMap<>();
-
-		try {
-			pacienteService.createPaciente(pacienteRequestDto);
-			respuesta.put("Message", "Usuario creado exitosamente.");
-			respuesta.put("Status", HttpStatus.CREATED.toString());
-		} catch (Exception e) {
-			respuesta.put("Message", "Ha sucedido un error.");
-			respuesta.put("Status", HttpStatus.BAD_REQUEST.toString());
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
+					.map(ObjectError::getDefaultMessage).collect(Collectors.joining()));
 		}
 
-		return new ResponseEntity<>(respuesta, HttpStatus.OK);
+		pacienteService.createPaciente(pacienteRequestDto);
+
+		return new ResponseEntity<>("Se creó paciente", HttpStatus.OK);
+	}
+
+	@Transactional(readOnly = true)
+	@GetMapping("/{id}")
+	public ResponseEntity<PacienteResponseDto> getPacienteById(@PathVariable(value = "id") Integer paciente_id) {
+		return ResponseEntity.ok(pacienteService.getPacienteById(paciente_id));
 	}
 }
