@@ -1,12 +1,8 @@
 package com.Sistema.Hospital.Controller;
 
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,16 +27,9 @@ public class PacienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> createPaciente(@RequestBody @Valid PacienteRequestDto pacienteRequestDto,
-			BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
-					.map(ObjectError::getDefaultMessage).collect(Collectors.joining()));
-		}
+	public ResponseEntity<String> createPaciente(@RequestBody @Valid PacienteRequestDto pacienteRequestDto) {
 
 		pacienteService.createPaciente(pacienteRequestDto);
-
 		return new ResponseEntity<>("Se creó paciente", HttpStatus.OK);
 	}
 

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.Sistema.Hospital.Config.ObjectValidator;
 import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
 import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
 import com.Sistema.Hospital.Entity.EstadoAtencion;
@@ -18,6 +19,7 @@ import com.Sistema.Hospital.Service.PacienteService;
 @Service
 public class PacienteServiceImpl implements PacienteService {
 
+	private final ObjectValidator validator;
 	PacienteRepository pacienteRepository;
 	EstadoAtencionRepository estadoAtencionRepository;
 	ModelMapper mapper;
@@ -28,11 +30,22 @@ public class PacienteServiceImpl implements PacienteService {
 		this.pacienteRepository = pacienteRepository;
 		this.mapper = mapper;
 		this.estadoAtencionRepository = estadoAtencionRepository;
+		this.validator = new ObjectValidator();
 	}
 
 	@Override
 	public void createPaciente(PacienteRequestDto pacienteRequestDto) {
+//		var violations = validator.validate(pacienteRequestDto);
+//		if (!violations.isEmpty()) {
+//			violations.forEach((error)->{
+//				String fieldName = "Error";
+//				String message = error.toString();
+//			});
+//			return String.join(" | ", violations);
+//		}
+
 		pacienteRepository.save(mapToEntitySinModelMapper(pacienteRequestDto));
+//		return "Se creó paciente";
 	}
 
 	@Override

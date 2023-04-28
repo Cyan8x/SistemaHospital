@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto.Errors;
+package com.Sistema.Hospital.Dto;
 
 import java.util.Date;
 
