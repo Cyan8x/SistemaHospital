@@ -16,26 +16,26 @@ public class PacienteRequestDto {
 
 	@NotBlank(message = "El campo NOMBRES no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo NOMBRES tiene que contener entre 1 a 100 carácteres.")
-	private String nombres;
+	private String nombresPaciente;
 
 	@NotBlank(message = "El campo APELLIDOS no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo APELLIDOS tiene que contener entre 1 a 100 carácteres.")
-	private String apellidos;
+	private String apellidosPaciente;
 
 	@NotBlank(message = "El campo DNI no debe estar vacío.")
-	@Length(min = 8, max = 8, message = "El campo DNI tiene que contener 8 carácteres.")
-	private String dni;
+	@Length(min = 8, max = 8, message = "El campo DNI tiene que contener solo 8 dígitos.")
+	private String dniPaciente;
 
 	@Length(min = 10, max = 200, message = "El campo DIRECCIÓN tiene que contener entre 10 a 200 carácteres.")
-	private String direccion;
+	private String direccionPaciente;
 
 	@Email(message = "El campo EMAIL debe contener un correo electrónico valido.")
 	@Length(min = 1, max = 50, message = "El campo EMAIL debe contener entre 1 a 50 carácteres.")
-	private String email;
+	private String emailPaciente;
 
-	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 digitos.")
-	private String telefono;
+	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
+	private String telefonoPaciente;
 
-	@NotNull
+	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")
 	private Integer estado_atencion_id;
 }
