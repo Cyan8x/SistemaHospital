@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,93 +24,72 @@ public class HorarioUsuario {
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoLunes;
+	private Boolean esActivoLunes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoMartes;
+	private Boolean esActivoMartes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoMiercoles;
+	private Boolean esActivoMiercoles;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoJueves;
+	private Boolean esActivoJueves;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoViernes;
+	private Boolean esActivoViernes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoSabado;
+	private Boolean esActivoSabado;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private boolean esActivoDomingo;
+	private Boolean esActivoDomingo;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioLunes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinLunes;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioMartes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinMartes;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioMiercoles;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinMiercoles;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioJueves;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinJueves;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioViernes;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinViernes;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioSabado;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinSabado;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaInicioDomingo;
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
 	private LocalTime horaFinDomingo;
 }

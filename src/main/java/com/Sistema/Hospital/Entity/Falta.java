@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,15 +31,13 @@ public class Falta {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
 	@NotNull
-	@NotEmpty
 	private Usuario usuario;
 
 	@Column(nullable = false)
 	@NotNull
-	@NotEmpty
-	private Date decha;
+	private Date fechaFalta;
 
 	@Column(length = 1000, nullable = true)
-	@Length(min = 1, max = 1000)
-	private String justifi_falta;
+	@Length(min = 1, max = 1000, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 1000 carácteres.")
+	private String justificacionFalta;
 }

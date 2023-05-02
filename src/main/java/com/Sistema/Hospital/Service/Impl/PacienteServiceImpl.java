@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Sistema.Hospital.Config.ObjectValidator;
@@ -19,33 +20,16 @@ import com.Sistema.Hospital.Service.PacienteService;
 @Service
 public class PacienteServiceImpl implements PacienteService {
 
-	private final ObjectValidator validator;
+	@Autowired
+	private final ObjectValidator<PacienteRequestDto> pacienteValidator = new ObjectValidator<PacienteRequestDto>();
 	PacienteRepository pacienteRepository;
 	EstadoAtencionRepository estadoAtencionRepository;
 	ModelMapper mapper;
 
-	public PacienteServiceImpl(PacienteRepository pacienteRepository, ModelMapper mapper,
-			EstadoAtencionRepository estadoAtencionRepository) {
-		super();
-		this.pacienteRepository = pacienteRepository;
-		this.mapper = mapper;
-		this.estadoAtencionRepository = estadoAtencionRepository;
-		this.validator = new ObjectValidator();
-	}
-
 	@Override
 	public void createPaciente(PacienteRequestDto pacienteRequestDto) {
-//		var violations = validator.validate(pacienteRequestDto);
-//		if (!violations.isEmpty()) {
-//			violations.forEach((error)->{
-//				String fieldName = "Error";
-//				String message = error.toString();
-//			});
-//			return String.join(" | ", violations);
-//		}
-
+		pacienteValidator.validate(pacienteRequestDto);
 		pacienteRepository.save(mapToEntitySinModelMapper(pacienteRequestDto));
-//		return "Se creó paciente";
 	}
 
 	@Override
@@ -82,14 +66,14 @@ public class PacienteServiceImpl implements PacienteService {
 						pacienteRequestDto.getEstado_atencion_id()));
 
 		Paciente paciente = new Paciente();
-		paciente.setApellidos(pacienteRequestDto.getApellidos());
-		paciente.setDireccion(pacienteRequestDto.getDireccion());
-		paciente.setDni(pacienteRequestDto.getDni());
-		paciente.setEmail(pacienteRequestDto.getEmail());
+		paciente.setApellidosPaciente(pacienteRequestDto.getApellidos());
+		paciente.setDireccionPaciente(pacienteRequestDto.getDireccion());
+		paciente.setDniPaciente(pacienteRequestDto.getDni());
+		paciente.setEmailPaciente(pacienteRequestDto.getEmail());
 		paciente.setEstadoAtencion(estadoAtencion);
-		paciente.setNombres(pacienteRequestDto.getNombres());
+		paciente.setNombresPaciente(pacienteRequestDto.getNombres());
 		// paciente.setPaciente_id(pacienteRequestDto.get());
-		paciente.setTelefono(pacienteRequestDto.getTelefono());
+		paciente.setTelefonoPaciente(pacienteRequestDto.getTelefono());
 
 		return paciente;
 	}

@@ -1,5 +1,6 @@
 package com.Sistema.Hospital.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +20,8 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/hospital/pacientes")
 public class PacienteController {
+	@Autowired
 	PacienteService pacienteService;
-
-	public PacienteController(PacienteService pacienteService) {
-		super();
-		this.pacienteService = pacienteService;
-	}
 
 	@PostMapping
 	public ResponseEntity<String> createPaciente(@RequestBody @Valid PacienteRequestDto pacienteRequestDto) {

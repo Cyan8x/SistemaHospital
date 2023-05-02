@@ -9,8 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,16 +18,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "estado_asistencia", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }) })
+@Table(name = "estado_asistencia", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "nombreEstadoAsistencia" }) })
 public class EstadoAsistencia {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer estado_asistencia_id;
 
-	@Column(nullable = false, length = 100)
-	@NotNull
-	@NotEmpty
-	@Length(min = 1, max = 100)
-	private String nombre;
+	@Column(nullable = false, length = 50)
+	@NotBlank(message = "El campo ESTADO no debe estar vacío.")
+	@Length(min = 1, max = 50, message = "El campo ESTADO tiene que contener entre 1 a 50 carácteres.")
+	private String nombreEstadoAsistencia;
 }

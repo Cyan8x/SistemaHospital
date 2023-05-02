@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.Sistema.Hospital.Exception.ObjectNotValidException;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -17,13 +19,13 @@ public class ObjectValidator<T> {
 	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private final Validator validator = factory.getValidator();
 
-	public Set<String> validate(T objectToValidate) {
+	public void validate(T objectToValidate) {
 		Set<ConstraintViolation<T>> violations = validator.validate(objectToValidate);
 
 		if (!violations.isEmpty()) {
-			return violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+			var errorMessage = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+			
+			throw new ObjectNotValidException();
 		}
-
-		return Collections.emptySet();
 	}
 }
