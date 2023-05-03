@@ -61,9 +61,13 @@ public class PacienteServiceImpl
 	@Override
 	public SuccesMessageDto updatePacienteById(PacienteRequestDto pacienteRequestDto, Integer paciente_id) {
 		Paciente paciente = mapFromDtoResponseToEntity(getPacienteById(paciente_id));
+		EstadoAtencion estadoAtencion = estadoAtencionRepository.findById(pacienteRequestDto.getEstado_atencion_id())
+				.orElseThrow(() -> new ResourceNotFound("Estado Atencion", "id",
+						pacienteRequestDto.getEstado_atencion_id()));
 		mapFromEntityToDtoRequest(pacienteRequestDto, paciente);
+		paciente.setEstadoAtencion(estadoAtencion);
 		pacienteRepository.save(paciente);
-		return SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+		return SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Paciente actualizado exitosamente.").build();
 	}
 
@@ -71,7 +75,7 @@ public class PacienteServiceImpl
 	public SuccesMessageDto deletePacienteById(Integer paciente_id) {
 		Paciente paciente = mapFromDtoResponseToEntity(getPacienteById(paciente_id));
 		pacienteRepository.delete(paciente);
-		return SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+		return SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Paciente eliminado exitosamente.").build();
 	}
 

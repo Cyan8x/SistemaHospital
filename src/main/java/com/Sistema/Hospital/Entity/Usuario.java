@@ -71,7 +71,7 @@ public class Usuario {
 	@NotNull
 	private boolean esActivoUsuario;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id", nullable = false)
 	@NotNull
 	private PerfilUsuario perilUsuario;

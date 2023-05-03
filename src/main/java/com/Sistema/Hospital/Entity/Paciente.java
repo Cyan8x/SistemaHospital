@@ -2,7 +2,6 @@ package com.Sistema.Hospital.Entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +31,7 @@ public class Paciente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer paciente_id;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 100) //insertable = fasle, updatable = false evitar inserccion o actualizacion de este dato
 	@NotBlank(message = "El campo NOMBRES no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo NOMBRES tiene que contener entre 1 a 100 carácteres.")
 	private String nombresPaciente;
@@ -60,7 +59,7 @@ public class Paciente {
 	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
 	private String telefonoPaciente;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false)
 	@NotNull
 	private EstadoAtencion estadoAtencion;
