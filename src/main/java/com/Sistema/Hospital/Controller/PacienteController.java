@@ -2,6 +2,8 @@ package com.Sistema.Hospital.Controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,6 @@ import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
 import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
 import com.Sistema.Hospital.Service.PacienteService;
 
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/hospital/pacientes")

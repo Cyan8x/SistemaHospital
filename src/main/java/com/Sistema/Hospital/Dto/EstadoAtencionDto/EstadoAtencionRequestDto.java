@@ -1,8 +1,9 @@
 package com.Sistema.Hospital.Dto.EstadoAtencionDto;
 
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

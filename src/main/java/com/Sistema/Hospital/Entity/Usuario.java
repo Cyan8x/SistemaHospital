@@ -1,39 +1,43 @@
 package com.Sistema.Hospital.Entity;
 
+import java.time.LocalTime;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "usuarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario" }),
-		@UniqueConstraint(columnNames = { "dniUsuario" }) })
+@Table(name = "usuarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario" }), @UniqueConstraint(columnNames = { "dniUsuario" }) })
 
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
 	private Integer usuario_id;
 
-	@Column(nullable = false, length = 25)
+	@Column(nullable = false, length = 30)
 	@NotBlank(message = "El campo USUARIO no debe estar vacío.")
 	@Length(min = 3, max = 30, message = "El campo USUARIO tiene que tener contener 3 a 30 carácteres.")
 	private String usuario;
@@ -63,21 +67,65 @@ public class Usuario {
 	@Length(min = 1, max = 50, message = "El campo EMAIL tiene que contener de 1 a 50 carácteres.")
 	private String emailUsuario;
 
-	@Column(nullable = true, length = 10)
-	@Length(min = 9, max = 10, message = "El campo TELEFONO tiene que contener solo 9 dígitos.")
+	@Column(nullable = true, length = 9)
+	@Length(min = 9, max = 9, message = "El campo TELEFONO tiene que contener solo 9 dígitos.")
 	private String telefonoUsuario;
 
 	@Column(nullable = false)
-	@NotNull
-	private boolean esActivoUsuario;
+	private Boolean esActivoUsuario;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id", nullable = false)
-	@NotNull
-	private PerfilUsuario perilUsuario;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "rol_id"))
+	private List<Rol> roles;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "horario_id", referencedColumnName = "horario_id", nullable = false)
-	@NotNull
-	private HorarioUsuario horarioUsuario;
+	@Column(nullable = false)
+	private Boolean esActivoLunes;
+	@Column(nullable = false)
+	private Boolean esActivoMartes;
+	@Column(nullable = false)
+	private Boolean esActivoMiercoles;
+	@Column(nullable = false)
+	private Boolean esActivoJueves;
+	@Column(nullable = false)
+	private Boolean esActivoViernes;
+	@Column(nullable = false)
+	private Boolean esActivoSabado;
+	@Column(nullable = false)
+	private Boolean esActivoDomingo;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioLunes;
+	@Column(nullable = false)
+	private LocalTime horaFinLunes;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioMartes;
+	@Column(nullable = false)
+	private LocalTime horaFinMartes;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioMiercoles;
+	@Column(nullable = false)
+	private LocalTime horaFinMiercoles;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioJueves;
+	@Column(nullable = false)
+	private LocalTime horaFinJueves;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioViernes;
+	@Column(nullable = false)
+	private LocalTime horaFinViernes;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioSabado;
+	@Column(nullable = false)
+	private LocalTime horaFinSabado;
+
+	@Column(nullable = false)
+	private LocalTime horaInicioDomingo;
+	@Column(nullable = false)
+	private LocalTime horaFinDomingo;
+
 }

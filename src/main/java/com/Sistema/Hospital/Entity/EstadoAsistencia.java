@@ -1,15 +1,16 @@
 package com.Sistema.Hospital.Entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "estado_asistencia", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "nombreEstadoAsistencia" }) })
+@Table(name = "estado_asistencia", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombreEstadoAsistencia" }) })
 public class EstadoAsistencia {
 
 	@Id
@@ -27,7 +27,7 @@ public class EstadoAsistencia {
 	private Integer estado_asistencia_id;
 
 	@Column(nullable = false, length = 50)
-	@NotBlank(message = "El campo ESTADO no debe estar vacío.")
-	@Length(min = 1, max = 50, message = "El campo ESTADO tiene que contener entre 1 a 50 carácteres.")
+	@NotBlank(message = "El campo ESTADO ASISTENCIA no debe estar vacío.")
+	@Length(min = 1, max = 50, message = "El campo ESTADO ASISTENCIA tiene que contener entre 1 a 50 carácteres.")
 	private String nombreEstadoAsistencia;
 }
