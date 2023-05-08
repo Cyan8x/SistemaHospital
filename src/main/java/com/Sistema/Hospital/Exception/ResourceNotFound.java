@@ -15,7 +15,7 @@ public class ResourceNotFound extends RuntimeException {
 	private long fieldValue;
 	private HttpStatus status;
 
-	public ResourceNotFound(String resourceName, String fieldName, long fieldValue) {
+	public ResourceNotFound(String resourceName, String fieldName, Integer fieldValue) {
 		super(String.format("%s no encontrado con el %s: '%s'", resourceName, fieldName, fieldValue));
 		this.resourceName = resourceName;
 		this.fieldName = fieldName;

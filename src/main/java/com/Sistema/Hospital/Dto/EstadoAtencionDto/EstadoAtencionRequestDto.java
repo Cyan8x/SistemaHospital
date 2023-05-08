@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EstadoAtencionRequestDto {
 
+	private Integer estado_atencion_id;
+	
 	@NotBlank(message = "El campo NOMBRE no debe estar vacío.")
 	@Length(min = 1, max = 50, message = "El campo NOMBRE tiene que contener entre 1 a 50 carácteres.")
 	private String nombreEstadoAtencion;

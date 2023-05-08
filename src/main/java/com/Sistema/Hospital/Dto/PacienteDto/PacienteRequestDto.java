@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteRequestDto {
+	
+	private Integer paciente_id;
 
 	@NotBlank(message = "El campo NOMBRES no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo NOMBRES tiene que contener entre 1 a 100 carácteres.")

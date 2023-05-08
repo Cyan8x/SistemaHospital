@@ -17,45 +17,37 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionRequestDto;
 import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionResponseDto;
-import com.Sistema.Hospital.Service.EstadoAtencionService;
+import com.Sistema.Hospital.Service.IEstadoAtencionService;
 
 @RestController
 @RequestMapping("/hospital/estadoatencion")
 public class EstadoAtencionController {
 
 	@Autowired
-	EstadoAtencionService estadoAtencionService;
+	IEstadoAtencionService iEstadoAtencionService;
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createEstadoAtencion(
-			@RequestBody EstadoAtencionRequestDto estadoAtencionRequestDto) {
-		return new ResponseEntity<>(estadoAtencionService.createEstadoAtencion(estadoAtencionRequestDto),
-				HttpStatus.CREATED);
+	public ResponseEntity<SuccesMessageDto> createEstadoAtencion(@RequestBody EstadoAtencionRequestDto estadoAtencionRequestDto) {
+		return new ResponseEntity<>(iEstadoAtencionService.create(estadoAtencionRequestDto), HttpStatus.CREATED);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<EstadoAtencionResponseDto>> getAllEstadoAtencion() {
-		return new ResponseEntity<>(estadoAtencionService.getAllEstadoAtencion(), HttpStatus.OK);
+		return new ResponseEntity<>(iEstadoAtencionService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<EstadoAtencionResponseDto> getEstadoAtencionById(
-			@PathVariable(value = "id") Integer estado_atencion_id) {
-		return new ResponseEntity<>(estadoAtencionService.getEstadoAtencionById(estado_atencion_id), HttpStatus.OK);
+	public ResponseEntity<EstadoAtencionResponseDto> getEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) {
+		return new ResponseEntity<>(iEstadoAtencionService.getById(estado_atencion_id), HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> updateEstadoAtencionById(
-			@PathVariable(value = "id") Integer estado_atencion_id,
-			@RequestBody EstadoAtencionRequestDto estadoAtencionRequestDto) {
-		return new ResponseEntity<>(
-				estadoAtencionService.updateEstadoAtencion(estadoAtencionRequestDto, estado_atencion_id),
-				HttpStatus.OK);
+	@PutMapping()
+	public ResponseEntity<SuccesMessageDto> updateEstadoAtencionById(@RequestBody EstadoAtencionRequestDto estadoAtencionRequestDto) {
+		return new ResponseEntity<>(iEstadoAtencionService.updateById(estadoAtencionRequestDto), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deleteEstadoAtencionById(
-			@PathVariable(value = "id") Integer estado_atencion_id) {
-		return new ResponseEntity<>(estadoAtencionService.deleteEstadoAtencionById(estado_atencion_id), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> deleteEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) {
+		return new ResponseEntity<>(iEstadoAtencionService.deleteById(estado_atencion_id), HttpStatus.OK);
 	}
 }
