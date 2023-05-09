@@ -9,15 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionRequestDto;
-import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionResponseDto;
+import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionDto;
 import com.Sistema.Hospital.Entity.EstadoAtencion;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Repository.IEstadoAtencionRepository;
 import com.Sistema.Hospital.Service.IEstadoAtencionService;
 
 @Service
-public class EstadoAtencionServiceImpl extends MAPPERBetweenDtoAndEntity<EstadoAtencionRequestDto, EstadoAtencionResponseDto, EstadoAtencion>
+public class EstadoAtencionServiceImpl extends MAPPERBetweenDtoAndEntity<EstadoAtencionDto, EstadoAtencionDto, EstadoAtencion>
 		implements IEstadoAtencionService {
 
 	@Autowired
@@ -29,32 +28,37 @@ public class EstadoAtencionServiceImpl extends MAPPERBetweenDtoAndEntity<EstadoA
 	}
 
 	@Override
-	Class<EstadoAtencionResponseDto> getRSClass() {
-		return EstadoAtencionResponseDto.class;
+	Class<EstadoAtencionDto> getRSClass() {
+		return EstadoAtencionDto.class;
+	}
+	
+	@Override
+	Class<EstadoAtencionDto> getRQClass() {
+		return getRSClass();
 	}
 
 	@Override
-	public SuccesMessageDto create(EstadoAtencionRequestDto estadoAtencionRequestDto) {
-		iEstadoAtencionRepository.save(mapFromDtoRequestToEntity(estadoAtencionRequestDto));
+	public SuccesMessageDto create(EstadoAtencionDto estadoAtencionDto) {
+		iEstadoAtencionRepository.save(mapFromDtoRequestToEntity(estadoAtencionDto));
 		return SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date()).message("Estado Atencion creado exitosamente.")
 				.build();
 	}
 
 	@Override
-	public List<EstadoAtencionResponseDto> getAll() {
+	public List<EstadoAtencionDto> getAll() {
 		return iEstadoAtencionRepository.findAll().stream().map(estAten -> mapFromEntityToDtoResponse(estAten)).collect(Collectors.toList());
 	}
 
 	@Override
-	public EstadoAtencionResponseDto getById(Integer estado_atencion_id) {
+	public EstadoAtencionDto getById(Integer estado_atencion_id) {
 		return mapFromEntityToDtoResponse(iEstadoAtencionRepository.findById(estado_atencion_id)
 				.orElseThrow(() -> new ResourceNotFound("Estado Atencion", "id", estado_atencion_id)));
 	}
 
 	@Override
-	public SuccesMessageDto updateById(EstadoAtencionRequestDto estadoAtencionRequestDto) {
-		EstadoAtencion estadoAtencion = mapFromDtoResponseToEntity(getById(estadoAtencionRequestDto.getEstado_atencion_id()));
-		mapFromEntityToDtoRequest(estadoAtencionRequestDto, estadoAtencion);
+	public SuccesMessageDto updateById(EstadoAtencionDto estadoAtencionDto) {
+		EstadoAtencion estadoAtencion = mapFromDtoResponseToEntity(getById(estadoAtencionDto.getEstado_atencion_id()));
+		mapFromEntityToDtoRequest(estadoAtencionDto, estadoAtencion);
 		iEstadoAtencionRepository.save(estadoAtencion);
 		return SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date()).message("Estado Atencion actualizado exitosamente.")
 				.build();

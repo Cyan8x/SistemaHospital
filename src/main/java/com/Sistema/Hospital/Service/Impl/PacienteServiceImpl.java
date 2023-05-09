@@ -38,6 +38,11 @@ public class PacienteServiceImpl extends MAPPERBetweenDtoAndEntity<PacienteReque
 	}
 
 	@Override
+	Class<PacienteRequestDto> getRQClass() {
+		return PacienteRequestDto.class;
+	}
+
+	@Override
 	public SuccesMessageDto create(PacienteRequestDto pacienteRequestDto) {
 		// pacienteValidator.validate(pacienteRequestDto);
 		EstadoAtencion estadoAtencion = iEstadoAtencionRepository.findById(pacienteRequestDto.getEstado_atencion_id())

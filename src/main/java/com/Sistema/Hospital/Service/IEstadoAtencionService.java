@@ -1,8 +1,7 @@
 package com.Sistema.Hospital.Service;
 
-import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionRequestDto;
-import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionResponseDto;
+import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionDto;
 
-public interface IEstadoAtencionService extends ICRUDService<EstadoAtencionRequestDto, EstadoAtencionResponseDto, Integer> {
+public interface IEstadoAtencionService extends ICRUDService<EstadoAtencionDto, EstadoAtencionDto, Integer> {
 
 }

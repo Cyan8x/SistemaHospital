@@ -6,16 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public abstract class MAPPERBetweenDtoAndEntity<RQ, RS, T> {
-	
+
 	@Autowired
 	ModelMapper mapper;
-	
+
 	abstract Class<T> getTClass();
+
 	abstract Class<RS> getRSClass();
 
-    
+	abstract Class<RQ> getRQClass();
+
 	// DtoRequest a Entity
-    protected T mapFromDtoRequestToEntity(RQ rq) {
+	protected T mapFromDtoRequestToEntity(RQ rq) {
 		return mapper.map(rq, getTClass());
 	}
 
@@ -33,4 +35,9 @@ public abstract class MAPPERBetweenDtoAndEntity<RQ, RS, T> {
 	protected T mapFromDtoResponseToEntity(RS rs) {
 		return mapper.map(rs, getTClass());
 	}
+
+//	// Entity a DtoRequest
+//	protected RQ mapFromEntityToDtoReRequest(T t) {
+//		return mapper.map(t, getRQClass());
+//	}
 }

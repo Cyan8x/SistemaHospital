@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstadoAtencionRequestDto {
+public class EstadoAtencionDto {
 
 	private Integer estado_atencion_id;
 	
