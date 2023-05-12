@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
-import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
+import com.Sistema.Hospital.Dto.Paciente.PacienteRequestDto;
+import com.Sistema.Hospital.Dto.Paciente.PacienteResponseDto;
 import com.Sistema.Hospital.Service.IPacienteService;
 
 
@@ -46,7 +46,7 @@ public class PacienteController {
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody PacienteRequestDto pacienteRequestDto) {
+	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid PacienteRequestDto pacienteRequestDto) {
 		return new ResponseEntity<>(iPacienteService.updateById(pacienteRequestDto), HttpStatus.OK);
 	}
 

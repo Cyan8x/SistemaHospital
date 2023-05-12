@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.PacienteDto.PacienteRequestDto;
-import com.Sistema.Hospital.Dto.PacienteDto.PacienteResponseDto;
+import com.Sistema.Hospital.Dto.Paciente.PacienteRequestDto;
+import com.Sistema.Hospital.Dto.Paciente.PacienteResponseDto;
 import com.Sistema.Hospital.Entity.EstadoAtencion;
 import com.Sistema.Hospital.Entity.Paciente;
 import com.Sistema.Hospital.Exception.ResourceNotFound;

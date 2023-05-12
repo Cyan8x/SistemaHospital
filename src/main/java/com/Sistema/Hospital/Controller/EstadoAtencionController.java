@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.EstadoAtencionDto.EstadoAtencionDto;
+import com.Sistema.Hospital.Dto.EstadoAtencion.EstadoAtencionDto;
 import com.Sistema.Hospital.Service.IEstadoAtencionService;
 
 @RestController

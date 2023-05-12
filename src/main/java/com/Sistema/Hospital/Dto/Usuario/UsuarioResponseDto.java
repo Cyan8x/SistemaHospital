@@ -1,4 +1,6 @@
-package com.Sistema.Hospital.Dto.UsuarioDto;
+package com.Sistema.Hospital.Dto.Usuario;
+
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -6,8 +8,18 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.Sistema.Hospital.Entity.Rol;
 
-public class UsuarioRequestDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UsuarioResponseDto {
+
+	private Integer usuario_id;
 
 	@NotBlank(message = "El campo USUARIO no debe estar vacío.")
 	@Length(min = 3, max = 30, message = "El campo USUARIO tiene que tener contener 3 a 30 carácteres.")
@@ -36,9 +48,9 @@ public class UsuarioRequestDto {
 	@Length(min = 9, max = 10, message = "El campo TELEFONO tiene que contener solo 9 dígitos.")
 	private String telefonoUsuario;
 
-	@NotNull(message = "El campo PERFIL no debe estar vacío.")
-	private Integer perfilUsuarioId;
+	@NotNull
+	private Boolean esActivoUsuario;
 
-	@NotNull(message = "El campo HORARIO no debe estar vacío.")
-	private Integer horarioUsaurioId;
+	@NotNull(message = "La lista de ROLES no debe estar vacio.")
+	private List<Rol> roles;
 }

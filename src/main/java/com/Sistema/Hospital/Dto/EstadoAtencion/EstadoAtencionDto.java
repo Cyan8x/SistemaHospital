@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto.EstadoAtencionDto;
+package com.Sistema.Hospital.Dto.EstadoAtencion;
 
 import javax.validation.constraints.NotBlank;
 

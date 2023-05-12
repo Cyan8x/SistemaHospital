@@ -18,6 +18,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Value;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "usuarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario" }), @UniqueConstraint(columnNames = { "dniUsuario" }) })
 
-public class Usuario {
+public class Usuario { 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
@@ -72,6 +73,7 @@ public class Usuario {
 	private String telefonoUsuario;
 
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoUsuario;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -79,53 +81,74 @@ public class Usuario {
 	private List<Rol> roles;
 
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoLunes;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoMartes;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoMiercoles;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoJueves;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoViernes;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoSabado;
 	@Column(nullable = false)
+	@Value("${app.defaultvalue.boolean-value}")
 	private Boolean esActivoDomingo;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioLunes;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinLunes;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioMartes;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinMartes;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioMiercoles;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinMiercoles;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioJueves;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinJueves;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioViernes;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinViernes;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioSabado;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinSabado;
 
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-iniciodia-value}')}")
 	private LocalTime horaInicioDomingo;
 	@Column(nullable = false)
+	@Value("#{ T(java.time.LocalTime).parse('${app.defaultvalue.localtime-findia-value}')}")
 	private LocalTime horaFinDomingo;
 
 }

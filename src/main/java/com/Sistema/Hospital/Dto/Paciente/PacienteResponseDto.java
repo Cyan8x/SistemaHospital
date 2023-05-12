@@ -1,10 +1,12 @@
-package com.Sistema.Hospital.Dto.PacienteDto;
+package com.Sistema.Hospital.Dto.Paciente;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+
+import com.Sistema.Hospital.Entity.EstadoAtencion;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PacienteRequestDto {
-	
+public class PacienteResponseDto {
+
 	private Integer paciente_id;
 
 	@NotBlank(message = "El campo NOMBRES no debe estar vacío.")
@@ -28,7 +30,7 @@ public class PacienteRequestDto {
 	@NotBlank(message = "El campo DNI no debe estar vacío.")
 	@Length(min = 8, max = 8, message = "El campo DNI tiene que contener solo 8 dígitos.")
 	private String dniPaciente;
-
+	
 	@Length(min = 10, max = 200, message = "El campo DIRECCIÓN tiene que contener entre 10 a 200 carácteres.")
 	private String direccionPaciente;
 
@@ -38,7 +40,7 @@ public class PacienteRequestDto {
 
 	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
 	private String telefonoPaciente;
-
-	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")
-	private Integer estado_atencion_id;
+	
+	@NotNull
+	private EstadoAtencion estadoAtencion;
 }
