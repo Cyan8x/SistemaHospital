@@ -1,6 +1,7 @@
-package com.Sistema.Hospital.Dto.Usuario;
+package com.Sistema.Hospital.Dto;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioRequestDto {
+public class UsuarioDto {
 
 	private Integer usuario_id;
 
@@ -49,7 +50,7 @@ public class UsuarioRequestDto {
 	private Boolean esActivoUsuario =  true;
 
 	@NotNull(message = "La lista de ROLES no debe estar vacio.")
-	private Integer[] roles;
+	private List<RolDto> roles;
 
 	private Boolean esActivoLunes = true;
 	private Boolean esActivoMartes = true;

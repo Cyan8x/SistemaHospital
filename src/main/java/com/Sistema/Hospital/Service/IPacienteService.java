@@ -1,8 +1,7 @@
 package com.Sistema.Hospital.Service;
 
-import com.Sistema.Hospital.Dto.Paciente.PacienteRequestDto;
-import com.Sistema.Hospital.Dto.Paciente.PacienteResponseDto;
+import com.Sistema.Hospital.Entity.Paciente;
 
-public interface IPacienteService extends ICRUDService<PacienteRequestDto,PacienteResponseDto, Integer> {
+public interface IPacienteService extends ICRUDService<Paciente, Integer> {
 
 }

@@ -1,6 +1,8 @@
 package com.Sistema.Hospital.Controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,39 +18,72 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Sistema.Hospital.Dto.EstadoAtencionDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.EstadoAtencion.EstadoAtencionDto;
+import com.Sistema.Hospital.Entity.EstadoAtencion;
+import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IEstadoAtencionService;
 
 @RestController
 @RequestMapping("/hospital/estadoatencion")
-public class EstadoAtencionController {
+public class EstadoAtencionController extends MAPPERBetweenDtoAndEntity<EstadoAtencionDto, EstadoAtencion> {
 
 	@Autowired
-	IEstadoAtencionService iEstadoAtencionService;
+	private IEstadoAtencionService iEstadoAtencionService;
+
+	@Override
+	protected Class<EstadoAtencion> getTClass() {
+		return EstadoAtencion.class;
+	}
+
+	@Override
+	protected Class<EstadoAtencionDto> getDTOClass() {
+		return EstadoAtencionDto.class;
+	}
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createEstadoAtencion(@Valid @RequestBody EstadoAtencionDto estadoAtencionDto) {
-		return new ResponseEntity<>(iEstadoAtencionService.create(estadoAtencionDto), HttpStatus.CREATED);
+	public ResponseEntity<SuccesMessageDto> createEstadoAtencion(@Valid @RequestBody EstadoAtencionDto estadoAtencionDto) throws Exception {
+		iEstadoAtencionService.create(mapFromDtoRequestToEntity(estadoAtencionDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+				.message("Estado Atencion creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<EstadoAtencionDto>> getAllEstadoAtencion() {
-		return new ResponseEntity<>(iEstadoAtencionService.getAll(), HttpStatus.OK);
+	public ResponseEntity<List<EstadoAtencionDto>> getAllEstadoAtencion() throws Exception {
+		List<EstadoAtencionDto> listaDto = iEstadoAtencionService.getAll().stream().map(estadoAtencion -> mapFromEntityToDto(estadoAtencion))
+				.collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<EstadoAtencionDto> getEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) {
-		return new ResponseEntity<>(iEstadoAtencionService.getById(estado_atencion_id), HttpStatus.OK);
+	public ResponseEntity<EstadoAtencionDto> getEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) throws Exception {
+		EstadoAtencion estadoAtencion = iEstadoAtencionService.getById(estado_atencion_id);
+		if (estadoAtencion == null) {
+			throw new ResourceNotFound("Estado Atencion", "id", estado_atencion_id);
+		}
+		return new ResponseEntity<>(mapFromEntityToDto(estadoAtencion), HttpStatus.OK);
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updateEstadoAtencionById(@Valid @RequestBody EstadoAtencionDto estadoAtencionDto) {
-		return new ResponseEntity<>(iEstadoAtencionService.updateById(estadoAtencionDto), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> updateEstadoAtencion(@Valid @RequestBody EstadoAtencionDto estadoAtencionDto) throws Exception {
+		EstadoAtencion estadoAtencion = iEstadoAtencionService.getById(estadoAtencionDto.getEstado_atencion_id());
+		if (estadoAtencion == null) {
+			throw new ResourceNotFound("Estado Atencion", "id", estadoAtencionDto.getEstado_atencion_id());
+		}
+		iEstadoAtencionService.update(mapFromDtoRequestToEntity(estadoAtencionDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message("Estado Atencion actualizado exitosamente.").build(), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deleteEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) {
-		return new ResponseEntity<>(iEstadoAtencionService.deleteById(estado_atencion_id), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> deleteEstadoAtencionById(@PathVariable(value = "id") Integer estado_atencion_id) throws Exception {
+		EstadoAtencion estadoAtencion = iEstadoAtencionService.getById(estado_atencion_id);
+		if (estadoAtencion == null) {
+			throw new ResourceNotFound("Estado Atencion", "id", estado_atencion_id);
+		}
+		iEstadoAtencionService.deleteById(estado_atencion_id);
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message("Estado Atencion eliminado exitosamente.").build(), HttpStatus.OK);
 	}
+
 }

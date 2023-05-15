@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto.Paciente;
+package com.Sistema.Hospital.Dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PacienteRequestDto {
+public class PacienteDto {
 	
 	private Integer paciente_id;
 
@@ -40,5 +40,5 @@ public class PacienteRequestDto {
 	private String telefonoPaciente;
 
 	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")
-	private Integer estado_atencion_id;
+	private EstadoAtencionDto estadoAtencion;
 }

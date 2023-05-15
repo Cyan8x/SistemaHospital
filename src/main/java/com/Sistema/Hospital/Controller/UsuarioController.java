@@ -1,13 +1,14 @@
 package com.Sistema.Hospital.Controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,40 +19,70 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.Usuario.UsuarioRequestDto;
-import com.Sistema.Hospital.Dto.Usuario.UsuarioResponseDto;
+import com.Sistema.Hospital.Dto.UsuarioDto;
+import com.Sistema.Hospital.Entity.Usuario;
+import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IUsuarioService;
 
 @RestController
 @RequestMapping("/hospital/usuarios")
-public class UsuarioController {
+public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usuario> {
 
 	@Autowired
-	IUsuarioService iUsuarioService;
+	private IUsuarioService iUsuarioService;
+
+	@Override
+	protected Class<Usuario> getTClass() {
+		return Usuario.class;
+	}
+
+	@Override
+	protected Class<UsuarioDto> getDTOClass() {
+		return UsuarioDto.class;
+	}
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createUsuario(@RequestBody @Valid UsuarioRequestDto usuarioRequestDto) {
-		return new ResponseEntity<>(iUsuarioService.create(usuarioRequestDto), HttpStatus.CREATED);
+	public ResponseEntity<SuccesMessageDto> createUsuario(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
+		iUsuarioService.create(mapFromDtoRequestToEntity(usuarioDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+				.message("Usuario creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
 	@GetMapping()
-	public ResponseEntity<List<UsuarioResponseDto>> getAllPacientes() {
-		return new ResponseEntity<>(iUsuarioService.getAll(), HttpStatus.OK);
+	public ResponseEntity<List<UsuarioDto>> getAllPacientes() throws Exception {
+		List<UsuarioDto> listaDto = iUsuarioService.getAll().stream().map(usuario -> mapFromEntityToDto(usuario)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
-	@Transactional(readOnly = true)
 	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioResponseDto> getPacienteById(@PathVariable(value = "id") Integer usuario_id) {
-		return new ResponseEntity<>(iUsuarioService.getById(usuario_id), HttpStatus.OK);
+	public ResponseEntity<UsuarioDto> getPacienteById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		return new ResponseEntity<>(mapFromEntityToDto(usuario), HttpStatus.OK);
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid UsuarioRequestDto usuarioRequestDto) {
-		return new ResponseEntity<>(iUsuarioService.updateById(usuarioRequestDto), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuarioDto.getUsuario_id());
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuarioDto.getUsuario_id());
+		}
+		iUsuarioService.update(mapFromDtoRequestToEntity(usuarioDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message("Usuario actualizado exitosamente.").build(), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer usuario_id) {
-		return new ResponseEntity<>(iUsuarioService.deleteById(usuario_id), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		iUsuarioService.deleteById(usuario_id);
+		return new ResponseEntity<>(
+				SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date()).message("Usuario eliminado exitosamente.").build(),
+				HttpStatus.OK);
 	}
 }

@@ -1,8 +1,7 @@
 package com.Sistema.Hospital.Service;
 
-import com.Sistema.Hospital.Dto.Usuario.UsuarioRequestDto;
-import com.Sistema.Hospital.Dto.Usuario.UsuarioResponseDto;
+import com.Sistema.Hospital.Entity.Usuario;
 
-public interface IUsuarioService extends ICRUDService<UsuarioRequestDto, UsuarioResponseDto, Integer>{
+public interface IUsuarioService extends ICRUDService<Usuario, Integer> {
 
 }

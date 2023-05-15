@@ -2,9 +2,7 @@ package com.Sistema.Hospital.Service;
 
 import java.util.List;
 
-import com.Sistema.Hospital.Dto.SuccesMessageDto;
-
-public interface ICRUDService<RQ, RS, ID> {
+public interface ICRUDService<T, ID> {
 
 	/*
 	 * T = TIPO K = KEY V = VALUE
@@ -16,13 +14,13 @@ public interface ICRUDService<RQ, RS, ID> {
 	// void updateById(T t);
 	// void deleteById(ID id);
 
-	SuccesMessageDto create(RQ rq);
+	T create(T t) throws Exception;
 
-	List<RS> getAll();
+	List<T> getAll() throws Exception;
 
-	RS getById(ID id);
+	T getById(ID id) throws Exception;
 
-	SuccesMessageDto updateById(RQ rq);
+	T update(T t) throws Exception;
 
-	SuccesMessageDto deleteById(ID id);
+	void deleteById(ID id) throws Exception;
 }

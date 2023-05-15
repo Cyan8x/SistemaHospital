@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto.Rol;
+package com.Sistema.Hospital.Dto;
 
 import javax.validation.constraints.NotBlank;
 

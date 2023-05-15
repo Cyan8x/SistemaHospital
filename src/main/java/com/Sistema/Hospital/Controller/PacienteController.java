@@ -1,13 +1,14 @@
 package com.Sistema.Hospital.Controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,42 +18,71 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Sistema.Hospital.Dto.PacienteDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
-import com.Sistema.Hospital.Dto.Paciente.PacienteRequestDto;
-import com.Sistema.Hospital.Dto.Paciente.PacienteResponseDto;
+import com.Sistema.Hospital.Entity.Paciente;
+import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
-
 
 @RestController
 @RequestMapping("/hospital/pacientes")
-public class PacienteController {
+public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, Paciente> {
+
 	@Autowired
-	IPacienteService iPacienteService;
+	private IPacienteService iPacienteService;
+
+	@Override
+	protected Class<Paciente> getTClass() {
+		return Paciente.class;
+	}
+
+	@Override
+	protected Class<PacienteDto> getDTOClass() {
+		return PacienteDto.class;
+	}
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createPaciente(@RequestBody @Valid PacienteRequestDto pacienteRequestDto) {
-		return new ResponseEntity<>(iPacienteService.create(pacienteRequestDto), HttpStatus.CREATED);
+	public ResponseEntity<SuccesMessageDto> createPaciente(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
+		iPacienteService.create(mapFromDtoRequestToEntity(pacienteDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+				.message("Paciente creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
 	@GetMapping()
-	public ResponseEntity<List<PacienteResponseDto>> getAllPacientes() {
-		return new ResponseEntity<>(iPacienteService.getAll(), HttpStatus.OK);
+	public ResponseEntity<List<PacienteDto>> getAllPacientes() throws Exception {
+		List<PacienteDto> listaDto = iPacienteService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
-	@Transactional(readOnly = true)
 	@GetMapping("/{id}")
-	public ResponseEntity<PacienteResponseDto> getPacienteById(@PathVariable(value = "id") Integer paciente_id) {
-		return new ResponseEntity<>(iPacienteService.getById(paciente_id), HttpStatus.OK);
+	public ResponseEntity<PacienteDto> getPacienteById(@PathVariable(value = "id") Integer paciente_id) throws Exception {
+		Paciente paciente = iPacienteService.getById(paciente_id);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", paciente_id);
+		}
+		return new ResponseEntity<>(mapFromEntityToDto(paciente), HttpStatus.OK);
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid PacienteRequestDto pacienteRequestDto) {
-		return new ResponseEntity<>(iPacienteService.updateById(pacienteRequestDto), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
+		Paciente paciente = iPacienteService.getById(pacienteDto.getPaciente_id());
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
+		}
+
+		iPacienteService.update(mapFromDtoRequestToEntity(pacienteDto));
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message("Paciente actualizado exitosamente.").build(), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer paciente_id) {
-		return new ResponseEntity<>(iPacienteService.deleteById(paciente_id), HttpStatus.OK);
+	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer paciente_id) throws Exception {
+		Paciente paciente = iPacienteService.getById(paciente_id);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", paciente_id);
+		}
+		iPacienteService.deleteById(paciente_id);
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message("Paciente eliminado exitosamente.").build(), HttpStatus.OK);
 	}
-
 }

@@ -1,7 +1,7 @@
 package com.Sistema.Hospital.Service;
 
-import com.Sistema.Hospital.Dto.Rol.RolDto;
+import com.Sistema.Hospital.Entity.Rol;
 
-public interface IRolService extends ICRUDService<RolDto, RolDto, Integer> {
+public interface IRolService extends ICRUDService<Rol, Integer> {
 
 }
