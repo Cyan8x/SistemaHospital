@@ -47,7 +47,7 @@ public class Procedimiento {
 	private Boolean es_terminado;
 
 	@Column(nullable = false, length = 50)
-	@NotBlank
+	@NotBlank(message = "El campo USUARIO CREADOR no tiene que estar vacío.")
 	@Length(min = 3, max = 50)
 	private String usuario_creador;
 }
