@@ -1,11 +1,9 @@
 package com.Sistema.Hospital.Dto;
 
 import java.time.LocalTime;
-import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -48,9 +46,6 @@ public class UsuarioDto {
 	private String telefonoUsuario;
 
 	private Boolean esActivoUsuario =  true;
-
-	@NotNull(message = "La lista de ROLES no debe estar vacio.")
-	private List<RolDto> roles;
 
 	private Boolean esActivoLunes = true;
 	private Boolean esActivoMartes = true;
