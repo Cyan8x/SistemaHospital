@@ -60,6 +60,12 @@ public class Paciente {
 	@Column(nullable = true, length = 9)
 	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
 	private String telefonoPaciente;
+	
+	@Column(nullable = false)
+	private Boolean esActivo;
+
+	@Column(nullable = false)
+	private Boolean esFavorito;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false, foreignKey = @ForeignKey(name = "FK_paciente_estadoatencion"))

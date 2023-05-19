@@ -1,5 +1,7 @@
 package com.Sistema.Hospital.Service.Impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,10 @@ public class PacienteServiceImpl extends CRUDServiceImpl<Paciente, Integer> impl
 	@Override
 	protected IGENERICRepository<Paciente, Integer> getRepo() {
 		return iPacienteRepository;
+	}
+
+	@Override
+	public List<Paciente> selectFavoritos() {
+		return iPacienteRepository.selectFavoritos();
 	}
 }

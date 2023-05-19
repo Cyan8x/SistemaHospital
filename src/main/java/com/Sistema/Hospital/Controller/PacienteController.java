@@ -85,4 +85,10 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Paciente eliminado exitosamente.").build(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/favoritos")
+	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos() throws Exception {
+		List<PacienteDto> listaDto = iPacienteService.selectFavoritos().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
 }
