@@ -60,11 +60,13 @@ public class Paciente {
 	@Column(nullable = true, length = 9)
 	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
 	private String telefonoPaciente;
-	
+
 	@Column(nullable = false)
+	@NotNull(message = "Debe completar si está ACTIVO o no el paciente.")
 	private Boolean esActivo;
 
 	@Column(nullable = false)
+	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
 	private Boolean esFavorito;
 
 	@ManyToOne(fetch = FetchType.EAGER)

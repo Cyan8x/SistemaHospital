@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -72,6 +73,7 @@ public class Usuario {
 	private String telefonoUsuario;
 
 	@Column(nullable = false)
+	@NotNull(message = "Debe completar si está activo o no el usuario.")
 	private Boolean esActivoUsuario;
 
 	@ManyToMany(fetch = FetchType.EAGER)

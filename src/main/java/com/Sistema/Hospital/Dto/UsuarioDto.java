@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -45,7 +46,8 @@ public class UsuarioDto {
 	@Length(min = 9, max = 10, message = "El campo TELEFONO tiene que contener solo 9 dígitos.")
 	private String telefonoUsuario;
 
-	private Boolean esActivoUsuario =  true;
+	@NotNull(message = "Debe completar si está activo o no el usuario.")
+	private Boolean esActivoUsuario;
 
 	private Boolean esActivoLunes = true;
 	private Boolean esActivoMartes = true;

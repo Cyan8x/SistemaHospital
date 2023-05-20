@@ -39,9 +39,11 @@ public class PacienteDto {
 	@Length(min = 9, max = 9, message = "El campo TELÉFONO tiene que contener solo 9 dígitos.")
 	private String telefonoPaciente;
 	
-	private Boolean esActivo = true;
+	@NotNull(message = "Debe completar si está ACTIVO o no el paciente.")
+	private Boolean esActivo;
 
-	private Boolean esFavorito = false;
+	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
+	private Boolean esFavorito;
 
 	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")
 	private EstadoAtencionDto estadoAtencion;
