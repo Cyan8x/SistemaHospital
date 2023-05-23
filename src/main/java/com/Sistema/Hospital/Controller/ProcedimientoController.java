@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.ProcedimientoDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
@@ -22,6 +24,8 @@ import com.Sistema.Hospital.Entity.Procedimiento;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IProcedimientoService;
 
+@RestController
+@RequestMapping("/hospital/procedimientos")
 public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<ProcedimientoDto, Procedimiento> {
 
 	@Autowired

@@ -68,6 +68,11 @@ public class Paciente {
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
 	private Boolean esFavorito;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "FK_paciente_usuario"))
+	@NotNull
+	private Usuario usuario;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false, foreignKey = @ForeignKey(name = "FK_paciente_estadoatencion"))

@@ -1,5 +1,8 @@
 package com.Sistema.Hospital.Entity;
 
+import java.security.Timestamp;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,4 +45,12 @@ public class Comentario {
 	@NotBlank(message = "El campo COMENTARIO no debe estar vacío.")
 	@Length(min = 1, max = 1000, message = "El campo COMENTARIO debe contener entre 1 a 1000 carácteres.")
 	private String comentario;
+	
+	@Column(nullable = false)
+	@NotNull
+	private Date fechaComentario;
+
+	@Column(nullable = false)
+	@NotNull
+	private Timestamp fechaHoraComentario;
 }

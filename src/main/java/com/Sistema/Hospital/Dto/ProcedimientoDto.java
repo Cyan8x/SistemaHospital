@@ -1,5 +1,7 @@
 package com.Sistema.Hospital.Dto;
 
+import java.security.Timestamp;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -31,4 +33,10 @@ public class ProcedimientoDto {
 	@NotBlank(message = "El campo USUARIO CREADOR no tiene que estar vacío.")
 	@Length(min = 3, max = 50)
 	private String usuario_creador;
+	
+	@NotNull
+	private Timestamp fechaHoraInicio;
+	
+	@NotNull
+	private Timestamp fechaHoraFin;
 }

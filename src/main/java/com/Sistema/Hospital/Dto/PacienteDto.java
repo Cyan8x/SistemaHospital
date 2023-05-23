@@ -45,6 +45,9 @@ public class PacienteDto {
 	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
 	private Boolean esFavorito;
 
+	@NotNull
+	private UsuarioDto usuario;
+	
 	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")
 	private EstadoAtencionDto estadoAtencion;
 }
