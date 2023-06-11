@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.ProcedimientoDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
+import com.Sistema.Hospital.Entity.Paciente;
 import com.Sistema.Hospital.Entity.Procedimiento;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
+import com.Sistema.Hospital.Service.IPacienteService;
 import com.Sistema.Hospital.Service.IProcedimientoService;
 
 @RestController
@@ -30,7 +32,10 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 
 	@Autowired
 	private IProcedimientoService iProcedimientoService;
-	
+
+	@Autowired
+	private IPacienteService iPacienteService;
+
 	@Override
 	protected Class<Procedimiento> getTClass() {
 		return Procedimiento.class;
@@ -50,7 +55,8 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 
 	@GetMapping()
 	public ResponseEntity<List<ProcedimientoDto>> getAllProcedimientos() throws Exception {
-		List<ProcedimientoDto> listaDto = iProcedimientoService.getAll().stream().map(procedimientoDto -> mapFromEntityToDto(procedimientoDto)).collect(Collectors.toList());
+		List<ProcedimientoDto> listaDto = iProcedimientoService.getAll().stream().map(procedimientoDto -> mapFromEntityToDto(procedimientoDto))
+				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
@@ -84,5 +90,41 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 		iProcedimientoService.deleteById(procedimientoDto_id);
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Procedimiento eliminado exitosamente.").build(), HttpStatus.OK);
+	}
+
+	@GetMapping("/pendientesPorPaciente/{pacienteId}")
+	public ResponseEntity<List<ProcedimientoDto>> getProcedimientosPendientesPorPaciente(@PathVariable(value = "pacienteId") Integer pacienteId)
+			throws Exception {
+		Paciente paciente = iPacienteService.getById(pacienteId);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", pacienteId);
+		}
+		List<ProcedimientoDto> listaDto = iProcedimientoService.selectProcedimientosPendientesPorPaciente(pacienteId).stream()
+				.map(procedimiento -> mapFromEntityToDto(procedimiento)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/terminadosPorPaciente/{pacienteId}")
+	public ResponseEntity<List<ProcedimientoDto>> selectProcedimientosTerminadosPorPaciente(@PathVariable(value = "pacienteId") Integer pacienteId)
+			throws Exception {
+		Paciente paciente = iPacienteService.getById(pacienteId);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", pacienteId);
+		}
+		List<ProcedimientoDto> listaDto = iProcedimientoService.selectProcedimientosTerminadosPorPaciente(pacienteId).stream()
+				.map(procedimiento -> mapFromEntityToDto(procedimiento)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/porPaciente/{pacienteId}")
+	public ResponseEntity<List<ProcedimientoDto>> selectProcedimientosPorPaciente(@PathVariable(value = "pacienteId") Integer pacienteId)
+			throws Exception {
+		Paciente paciente = iPacienteService.getById(pacienteId);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", pacienteId);
+		}
+		List<ProcedimientoDto> listaDto = iProcedimientoService.selectProcedimientosPorPaciente(pacienteId).stream()
+				.map(procedimiento -> mapFromEntityToDto(procedimiento)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 }

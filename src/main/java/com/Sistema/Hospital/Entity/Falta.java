@@ -38,7 +38,7 @@ public class Falta {
 	@NotNull
 	private Date fechaFalta;
 
-	@Column(length = 1000, nullable = true)
-	@Length(min = 1, max = 1000, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 1000 carácteres.")
+	@Column(length = 500, nullable = true)
+	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionFalta;
 }

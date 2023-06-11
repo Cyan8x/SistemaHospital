@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Sistema.Hospital.Dto.ComentarioDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Comentario;
+import com.Sistema.Hospital.Entity.Paciente;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IComentarioService;
+import com.Sistema.Hospital.Service.IPacienteService;
 
 @RestController
 @RequestMapping("/hospital/comentarios")
@@ -30,6 +32,9 @@ public class ComentarioController extends MAPPERBetweenDtoAndEntity<ComentarioDt
 
 	@Autowired
 	private IComentarioService iComentarioService;
+	
+	@Autowired
+	private IPacienteService iPacienteService;
 
 	@Override
 	protected Class<Comentario> getTClass() {
@@ -50,7 +55,8 @@ public class ComentarioController extends MAPPERBetweenDtoAndEntity<ComentarioDt
 
 	@GetMapping()
 	public ResponseEntity<List<ComentarioDto>> getAllComentarios() throws Exception {
-		List<ComentarioDto> listaDto = iComentarioService.getAll().stream().map(comentario -> mapFromEntityToDto(comentario)).collect(Collectors.toList());
+		List<ComentarioDto> listaDto = iComentarioService.getAll().stream().map(comentario -> mapFromEntityToDto(comentario))
+				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
@@ -84,5 +90,16 @@ public class ComentarioController extends MAPPERBetweenDtoAndEntity<ComentarioDt
 		iComentarioService.deleteById(comentario_id);
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Comentario eliminado exitosamente.").build(), HttpStatus.OK);
+	}
+
+	@GetMapping("/porPaciente/{pacienteId}")
+	public ResponseEntity<List<ComentarioDto>> getComentariosPorPaciente(@PathVariable(value = "pacienteId") Integer paciente_id) throws Exception {
+		Paciente paciente = iPacienteService.getById(paciente_id);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", paciente_id);
+		}		
+		List<ComentarioDto> listaDto = iComentarioService.selectComentariosPorPaciente(paciente_id).stream().map(comentario -> mapFromEntityToDto(comentario))
+				.collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 }

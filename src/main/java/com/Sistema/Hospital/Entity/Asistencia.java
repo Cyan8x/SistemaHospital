@@ -43,8 +43,8 @@ public class Asistencia {
 	@NotNull
 	private Timestamp fechaHoraMarcacion;
 
-	@Column(nullable = true, length = 1000)
-	@Length(min = 1, max = 1000, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 1000 carácteres.")
+	@Column(nullable = true, length = 500)
+	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionTardanza;
 
 	@ManyToOne(fetch = FetchType.EAGER)

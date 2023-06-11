@@ -27,7 +27,7 @@ public class AsistenciaDto {
 	@NotNull
 	private Timestamp fechaHoraMarcacion;
 
-	@Length(min = 1, max = 1000, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 1000 carácteres.")
+	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionTardanza;
 
 	@NotNull

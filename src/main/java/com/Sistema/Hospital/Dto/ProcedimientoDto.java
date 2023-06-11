@@ -1,6 +1,6 @@
 package com.Sistema.Hospital.Dto;
 
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class ProcedimientoDto {
 	private PacienteDto paciente;
 
 	@NotBlank(message = "El campo PROCEDIMIENTO no tiene que estar vacío.")
-	@Length(min = 5, max = 1000, message = "El campo PROCEDIMIENTO tiene que contener de 5 a 1000 carácteres.")
+	@Length(min = 5, max = 300, message = "El campo PROCEDIMIENTO tiene que contener de 5 a 300 carácteres.")
 	private String procedimiento;
 
 	private Boolean es_terminado;
@@ -35,8 +35,8 @@ public class ProcedimientoDto {
 	private String usuario_creador;
 	
 	@NotNull
-	private Timestamp fechaHoraInicio;
+	private LocalDateTime fechaHoraInicio;
 	
 	@NotNull
-	private Timestamp fechaHoraFin;
+	private LocalDateTime fechaHoraFin;
 }

@@ -24,7 +24,7 @@ public class UsuarioDto {
 	private String usuario;
 
 	@NotBlank(message = "El campo PASSWORD no debe estar vacío.")
-	@Length(min = 8, max = 30, message = "El campo PASSWORD tiene que contener 8 a 30 carácteres.")
+	@Length(min = 5, max = 30, message = "El campo PASSWORD tiene que contener 5 a 30 carácteres.")
 	private String password;
 
 	@NotBlank(message = "El campo NOMBRE no debe estar vacío.")

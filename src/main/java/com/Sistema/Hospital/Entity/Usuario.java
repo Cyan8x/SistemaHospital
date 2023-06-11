@@ -45,7 +45,7 @@ public class Usuario {
 
 	@Column(nullable = false, length = 30)
 	@NotBlank(message = "El campo PASSWORD no debe estar vacío.")
-	@Length(min = 8, max = 30, message = "El campo PASSWORD tiene que contener 8 a 30 carácteres.")
+	@Length(min = 5, max = 30, message = "El campo PASSWORD tiene que contener 5 a 30 carácteres.")
 	private String password;
 
 	@Column(nullable = false, length = 100)

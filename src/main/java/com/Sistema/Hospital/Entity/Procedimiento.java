@@ -1,6 +1,6 @@
 package com.Sistema.Hospital.Entity;
 
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,9 +40,9 @@ public class Procedimiento {
 	@NotNull
 	private Paciente paciente;
 
-	@Column(nullable = false, length = 1000)
+	@Column(nullable = false, length = 300)
 	@NotBlank(message = "El campo PROCEDIMIENTO no tiene que estar vacío.")
-	@Length(min = 5, max = 1000, message = "El campo PROCEDIMIENTO tiene que contener de 5 a 1000 carácteres.")
+	@Length(min = 5, max = 300, message = "El campo PROCEDIMIENTO tiene que contener de 5 a 300 carácteres.")
 	private String procedimiento;
 
 	@Column(nullable = false)
@@ -55,9 +55,9 @@ public class Procedimiento {
 	
 	@Column(nullable = false)
 	@NotNull
-	private Timestamp fechaHoraInicio;
+	private LocalDateTime fechaHoraInicio;
 	
 	@Column(nullable = false)
 	@NotNull
-	private Timestamp fechaHoraFin;
+	private LocalDateTime fechaHoraFin;
 }
