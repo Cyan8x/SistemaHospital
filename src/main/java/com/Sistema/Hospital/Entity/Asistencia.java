@@ -1,7 +1,6 @@
 package com.Sistema.Hospital.Entity;
 
-import java.security.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,11 +36,7 @@ public class Asistencia {
 
 	@Column(nullable = false)
 	@NotNull
-	private Date fechaAsistencia;
-
-	@Column(nullable = false)
-	@NotNull
-	private Timestamp fechaHoraMarcacion;
+	private LocalDateTime fechaHoraAsistencia;
 
 	@Column(nullable = true, length = 500)
 	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")

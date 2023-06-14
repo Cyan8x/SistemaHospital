@@ -62,6 +62,15 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 		}
 		return new ResponseEntity<>(mapFromEntityToDto(usuario), HttpStatus.OK);
 	}
+	
+	@GetMapping("/porUsername/{username}")
+	public ResponseEntity<UsuarioDto> getUsuarioByUserName(@PathVariable(value = "username") String username) throws Exception {
+		Usuario usuario = iUsuarioService.findOneByUsuario(username);
+//		if (usuario == null) {
+//			throw new ResourceNotFound("Usuario", "username", username);
+//		}
+		return new ResponseEntity<>(mapFromEntityToDto(usuario), HttpStatus.OK);
+	}
 
 	@PutMapping()
 	public ResponseEntity<SuccesMessageDto> updateUsuarioById(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {

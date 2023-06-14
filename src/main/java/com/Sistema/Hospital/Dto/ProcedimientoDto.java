@@ -29,6 +29,9 @@ public class ProcedimientoDto {
 	private String procedimiento;
 
 	private Boolean es_terminado;
+	
+	@NotNull
+	private LocalDateTime fechaCreacionProced;
 
 	@NotBlank(message = "El campo USUARIO CREADOR no tiene que estar vacío.")
 	@Length(min = 3, max = 50)

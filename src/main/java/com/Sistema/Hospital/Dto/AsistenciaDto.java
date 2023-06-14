@@ -1,7 +1,6 @@
 package com.Sistema.Hospital.Dto;
 
-import java.security.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,10 +21,7 @@ public class AsistenciaDto {
 	private UsuarioDto usuario;
 
 	@NotNull
-	private Date fechaAsistencia;
-
-	@NotNull
-	private Timestamp fechaHoraMarcacion;
+	private LocalDateTime fechaHoraAsistencia;
 
 	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionTardanza;

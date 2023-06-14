@@ -35,3 +35,9 @@ INSERT INTO menu_rol (menu_id, rol_id) VALUES (2, 1);
 INSERT INTO menu_rol (menu_id, rol_id) VALUES (3, 1);
 INSERT INTO menu_rol (menu_id, rol_id) VALUES (4, 1);
 INSERT INTO menu_rol (menu_id, rol_id) VALUES (1, 2);
+
+select * from estado_asistencia
+
+INSERT INTO estado_asistencia values (1,'ASISTENCIA');
+INSERT INTO estado_asistencia values (2,'TARDANZA');
+INSERT INTO estado_asistencia values (3,'TARDANZA JUSTIFICADA');

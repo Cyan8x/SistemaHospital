@@ -21,16 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Sistema.Hospital.Dto.AsistenciaDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Asistencia;
+import com.Sistema.Hospital.Entity.Usuario;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IAsistenciaService;
+import com.Sistema.Hospital.Service.IUsuarioService;
 
 @RestController
 @RequestMapping("/hospital/asistencia")
-public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDto, Asistencia>{
+public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDto, Asistencia> {
 
 	@Autowired
 	private IAsistenciaService iAsistenciaService;
 	
+	@Autowired
+	private IUsuarioService iUsuarioService;
+
 	@Override
 	protected Class<Asistencia> getTClass() {
 		return Asistencia.class;
@@ -42,20 +47,23 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 	}
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createAsistencia(@RequestBody @Valid AsistenciaDto asistenciaDto) throws Exception {
+	public ResponseEntity<SuccesMessageDto> createAsistencia(@RequestBody @Valid AsistenciaDto asistenciaDto)
+			throws Exception {
 		iAsistenciaService.create(mapFromDtoRequestToEntity(asistenciaDto));
-		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
-				.message("Asistencia creado exitosamente.").build(), HttpStatus.CREATED);
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value())
+				.timestamp(new Date()).message("Asistencia creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
 	@GetMapping()
 	public ResponseEntity<List<AsistenciaDto>> getAllAsistencias() throws Exception {
-		List<AsistenciaDto> listaDto = iAsistenciaService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+		List<AsistenciaDto> listaDto = iAsistenciaService.getAll().stream()
+				.map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<AsistenciaDto> getAsistenciaById(@PathVariable(value = "id") Integer asistencia_id) throws Exception {
+	public ResponseEntity<AsistenciaDto> getAsistenciaById(@PathVariable(value = "id") Integer asistencia_id)
+			throws Exception {
 		Asistencia paciente = iAsistenciaService.getById(asistencia_id);
 		if (paciente == null) {
 			throw new ResourceNotFound("Asistencia", "id", asistencia_id);
@@ -64,7 +72,8 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updateAsistenciaById(@RequestBody @Valid AsistenciaDto asistenciaDto) throws Exception {
+	public ResponseEntity<SuccesMessageDto> updateAsistenciaById(@RequestBody @Valid AsistenciaDto asistenciaDto)
+			throws Exception {
 		Asistencia paciente = iAsistenciaService.getById(asistenciaDto.getAsistencia_id());
 		if (paciente == null) {
 			throw new ResourceNotFound("Asistencia", "id", asistenciaDto.getAsistencia_id());
@@ -76,7 +85,8 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deleteAsistenciaById(@PathVariable(value = "id") Integer asistencia_id) throws Exception {
+	public ResponseEntity<SuccesMessageDto> deleteAsistenciaById(@PathVariable(value = "id") Integer asistencia_id)
+			throws Exception {
 		Asistencia paciente = iAsistenciaService.getById(asistencia_id);
 		if (paciente == null) {
 			throw new ResourceNotFound("Asistencia", "id", asistencia_id);
@@ -85,5 +95,22 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Asistencia eliminado exitosamente.").build(), HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/verificar/{usuarioId}")
+	public ResponseEntity<SuccesMessageDto> verificarAsistenciaUsuarioHoy(@PathVariable(value = "usuarioId") Integer usuario_id)
+			throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		boolean asistenciaExiste = iAsistenciaService.existsByUsuarioAndFecha(usuario);
+		
+		if (asistenciaExiste) {
+			return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value())
+					.timestamp(new Date()).message("El usuario ya ha registrado asistencia hoy.").build(), HttpStatus.OK);
+        } else {
+        	return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value())
+    				.timestamp(new Date()).message("El usuario no ha registrado asistencia hoy.").build(), HttpStatus.OK);
+        }
+	}
 }

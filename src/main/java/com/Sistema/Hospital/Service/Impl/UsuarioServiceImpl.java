@@ -29,6 +29,11 @@ public class UsuarioServiceImpl extends CRUDServiceImpl<Usuario, Integer> implem
 	}
 	
 	@Override
+	public Usuario findOneByUsuario(String username) {
+		return iUsuarioRepository.findOneByUsuario(username);
+	}
+	
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Usuario usuario = iUsuarioRepository.findOneByUsuario(username);
@@ -47,5 +52,4 @@ public class UsuarioServiceImpl extends CRUDServiceImpl<Usuario, Integer> implem
 
 		return ud;
 	}
-
 }
