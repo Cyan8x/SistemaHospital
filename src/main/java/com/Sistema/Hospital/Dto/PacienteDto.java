@@ -1,5 +1,7 @@
 package com.Sistema.Hospital.Dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,10 +26,16 @@ public class PacienteDto {
 	@NotBlank(message = "El campo APELLIDOS no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo APELLIDOS tiene que contener entre 1 a 100 carácteres.")
 	private String apellidosPaciente;
-
-	@NotBlank(message = "El campo DNI no debe estar vacío.")
+	
+	@NotBlank(message = "El campo TIPO DOCUMENTO no debe estar vacío.")
+	@Length(min = 1, max = 50, message = "El campo TIPO DOCUMENTO tiene que contener entre 1 a 50 carácteres.")
+	private String tipoDocumento;
+	
 	@Length(min = 8, max = 8, message = "El campo DNI tiene que contener solo 8 dígitos.")
 	private String dniPaciente;
+	
+	@Length(min = 9, max = 9, message = "El campo CARNÉ EXTRANJERPÍA tiene que contener solo 9 dígitos.")
+	private String carneExtranjeria;
 
 	@Length(min = 10, max = 200, message = "El campo DIRECCIÓN tiene que contener entre 10 a 200 carácteres.")
 	private String direccionPaciente;
@@ -44,6 +52,9 @@ public class PacienteDto {
 
 	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
 	private Boolean esFavorito;
+	
+	@NotNull(message = "Debe completar la FECHA CREACION del paciente.")
+	private LocalDateTime fechaCreacionPaciente;
 
 	@NotNull
 	private UsuarioDto usuario;

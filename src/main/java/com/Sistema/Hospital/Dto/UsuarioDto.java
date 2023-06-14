@@ -1,5 +1,6 @@
 package com.Sistema.Hospital.Dto;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.validation.constraints.Email;
@@ -48,6 +49,9 @@ public class UsuarioDto {
 
 	@NotNull(message = "Debe completar si está activo o no el usuario.")
 	private Boolean esActivoUsuario;
+	
+	@NotNull(message = "Debe completar la FECHA CREACION del usuario.")
+	private LocalDateTime fechaCreacionUsuario;
 
 	private Boolean esActivoLunes = true;
 	private Boolean esActivoMartes = true;

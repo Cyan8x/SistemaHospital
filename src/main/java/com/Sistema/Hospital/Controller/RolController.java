@@ -25,7 +25,7 @@ import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IRolService;
 
 @RestController
-@RequestMapping("/hospital/roles")
+@RequestMapping("/hospital/rol")
 public class RolController extends MAPPERBetweenDtoAndEntity<RolDto, Rol> {
 
 	@Autowired

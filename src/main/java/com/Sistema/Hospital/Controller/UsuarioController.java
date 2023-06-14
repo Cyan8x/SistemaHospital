@@ -25,7 +25,7 @@ import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IUsuarioService;
 
 @RestController
-@RequestMapping("/hospital/usuarios")
+@RequestMapping("/hospital/usuario")
 public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usuario> {
 
 	@Autowired
@@ -49,13 +49,13 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 	}
 
 	@GetMapping()
-	public ResponseEntity<List<UsuarioDto>> getAllPacientes() throws Exception {
+	public ResponseEntity<List<UsuarioDto>> getAllUsuarios() throws Exception {
 		List<UsuarioDto> listaDto = iUsuarioService.getAll().stream().map(usuario -> mapFromEntityToDto(usuario)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioDto> getPacienteById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+	public ResponseEntity<UsuarioDto> getUsuarioById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuario_id);
 		if (usuario == null) {
 			throw new ResourceNotFound("Usuario", "id", usuario_id);
@@ -64,7 +64,7 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
+	public ResponseEntity<SuccesMessageDto> updateUsuarioById(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuarioDto.getUsuario_id());
 		if (usuario == null) {
 			throw new ResourceNotFound("Usuario", "id", usuarioDto.getUsuario_id());
@@ -75,7 +75,7 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+	public ResponseEntity<SuccesMessageDto> deleteUsuarioById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuario_id);
 		if (usuario == null) {
 			throw new ResourceNotFound("Usuario", "id", usuario_id);

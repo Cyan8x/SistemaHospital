@@ -25,7 +25,7 @@ import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IAsistenciaService;
 
 @RestController
-@RequestMapping("/hospital/asistencias")
+@RequestMapping("/hospital/asistencia")
 public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDto, Asistencia>{
 
 	@Autowired

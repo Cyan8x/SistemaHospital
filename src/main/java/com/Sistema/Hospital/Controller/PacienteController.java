@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
 
 @RestController
-@RequestMapping("/hospital/pacientes")
+@RequestMapping("/hospital/paciente")
 public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, Paciente> {
 
 	@Autowired
@@ -49,6 +50,9 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@GetMapping()
+	// @RequestMapping(value = "/" , method = RequestMethod.GET)
+	// @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<List<PacienteDto>> getAllPacientes() throws Exception {
 		List<PacienteDto> listaDto = iPacienteService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
@@ -85,10 +89,11 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Paciente eliminado exitosamente.").build(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/favoritos")
 	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos() throws Exception {
-		List<PacienteDto> listaDto = iPacienteService.selectFavoritos().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+		List<PacienteDto> listaDto = iPacienteService.selectFavoritos().stream().map(paciente -> mapFromEntityToDto(paciente))
+				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 }

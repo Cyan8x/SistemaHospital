@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "perfil_usuario", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombreRol" }) })
+@Table(name = "rol", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombreRol" }) })
 public class Rol {
 
 	@Id

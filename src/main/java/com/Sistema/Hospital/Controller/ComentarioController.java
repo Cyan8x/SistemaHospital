@@ -27,7 +27,7 @@ import com.Sistema.Hospital.Service.IComentarioService;
 import com.Sistema.Hospital.Service.IPacienteService;
 
 @RestController
-@RequestMapping("/hospital/comentarios")
+@RequestMapping("/hospital/comentario")
 public class ComentarioController extends MAPPERBetweenDtoAndEntity<ComentarioDto, Comentario> {
 
 	@Autowired

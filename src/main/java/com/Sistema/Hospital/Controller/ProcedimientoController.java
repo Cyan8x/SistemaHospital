@@ -27,7 +27,7 @@ import com.Sistema.Hospital.Service.IPacienteService;
 import com.Sistema.Hospital.Service.IProcedimientoService;
 
 @RestController
-@RequestMapping("/hospital/procedimientos")
+@RequestMapping("/hospital/procedimiento")
 public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<ProcedimientoDto, Procedimiento> {
 
 	@Autowired

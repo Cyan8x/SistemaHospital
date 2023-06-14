@@ -1,5 +1,6 @@
 package com.Sistema.Hospital.Entity;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -43,9 +44,8 @@ public class Usuario {
 	@Length(min = 3, max = 30, message = "El campo USUARIO tiene que tener contener 3 a 30 carácteres.")
 	private String usuario;
 
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 300)
 	@NotBlank(message = "El campo PASSWORD no debe estar vacío.")
-	@Length(min = 5, max = 30, message = "El campo PASSWORD tiene que contener 5 a 30 carácteres.")
 	private String password;
 
 	@Column(nullable = false, length = 100)
@@ -75,6 +75,10 @@ public class Usuario {
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar si está activo o no el usuario.")
 	private Boolean esActivoUsuario;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Debe completar la FECHA CREACION del usuario.")
+	private LocalDateTime fechaCreacionUsuario;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "rol_id"))
