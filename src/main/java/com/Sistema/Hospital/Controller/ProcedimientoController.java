@@ -22,9 +22,11 @@ import com.Sistema.Hospital.Dto.ProcedimientoDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Paciente;
 import com.Sistema.Hospital.Entity.Procedimiento;
+import com.Sistema.Hospital.Entity.Usuario;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
 import com.Sistema.Hospital.Service.IProcedimientoService;
+import com.Sistema.Hospital.Service.IUsuarioService;
 
 @RestController
 @RequestMapping("/hospital/procedimiento")
@@ -35,6 +37,9 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 
 	@Autowired
 	private IPacienteService iPacienteService;
+	
+	@Autowired
+	private IUsuarioService iUsuarioService;
 
 	@Override
 	protected Class<Procedimiento> getTClass() {
@@ -124,6 +129,18 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 			throw new ResourceNotFound("Paciente", "id", pacienteId);
 		}
 		List<ProcedimientoDto> listaDto = iProcedimientoService.selectProcedimientosPorPaciente(pacienteId).stream()
+				.map(procedimiento -> mapFromEntityToDto(procedimiento)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/pendientesPorUsuario/hoy/{usuario_id}")
+	public ResponseEntity<List<ProcedimientoDto>> selectProcedimientosPendientesPorUsuarioHoy(@PathVariable(value = "usuario_id") Integer usuario_id)
+			throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		List<ProcedimientoDto> listaDto = iProcedimientoService.selectProcedimientosPendientesPorUsuarioHoy(usuario_id).stream()
 				.map(procedimiento -> mapFromEntityToDto(procedimiento)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}

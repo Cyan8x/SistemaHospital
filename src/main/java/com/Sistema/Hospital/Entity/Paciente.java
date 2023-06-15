@@ -28,7 +28,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "pacientes", uniqueConstraints = { @UniqueConstraint(columnNames = { "dniPaciente" }),
-		@UniqueConstraint(columnNames = { "emailPaciente" }), @UniqueConstraint(columnNames = { "telefonoPaciente" }) })
+		@UniqueConstraint(columnNames = { "emailPaciente" }), @UniqueConstraint(columnNames = { "telefonoPaciente" }),
+		@UniqueConstraint(columnNames = { "carneExtranjeria" }) })
 public class Paciente {
 
 	@Id
@@ -44,7 +45,7 @@ public class Paciente {
 	@NotBlank(message = "El campo APELLIDOS no debe estar vacío.")
 	@Length(min = 1, max = 100, message = "El campo APELLIDOS tiene que contener entre 1 a 100 carácteres.")
 	private String apellidosPaciente;
-	
+
 	@Column(nullable = false, length = 50)
 	@NotBlank(message = "El campo TIPO DOCUMENTO no debe estar vacío.")
 	@Length(min = 1, max = 50, message = "El campo TIPO DOCUMENTO tiene que contener entre 1 a 50 carácteres.")
@@ -53,7 +54,7 @@ public class Paciente {
 	@Column(nullable = true, length = 8)
 	@Length(min = 8, max = 8, message = "El campo DNI tiene que contener solo 8 dígitos.")
 	private String dniPaciente;
-	
+
 	@Column(nullable = true, length = 9)
 	@Length(min = 9, max = 9, message = "El campo CARNÉ EXTRANJERPÍA tiene que contener solo 9 dígitos.")
 	private String carneExtranjeria;
@@ -78,11 +79,11 @@ public class Paciente {
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
 	private Boolean esFavorito;
-	
+
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar la FECHA CREACION del paciente.")
 	private LocalDateTime fechaCreacionPaciente;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "FK_paciente_usuario"))
 	@NotNull

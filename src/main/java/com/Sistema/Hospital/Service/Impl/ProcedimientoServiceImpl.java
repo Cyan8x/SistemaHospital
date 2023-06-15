@@ -15,6 +15,8 @@ public class ProcedimientoServiceImpl extends CRUDServiceImpl<Procedimiento, Int
 
 	@Autowired
 	private IProcedimientoRepository iProcedimientoRepository;
+	
+//	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Override
 	protected IGENERICRepository<Procedimiento, Integer> getRepo() {
@@ -34,6 +36,15 @@ public class ProcedimientoServiceImpl extends CRUDServiceImpl<Procedimiento, Int
 	@Override
 	public List<Procedimiento> selectProcedimientosTerminadosPorPaciente(Integer idPaciente) {
 		return iProcedimientoRepository.selectProcedimientosTerminadosPorPaciente(idPaciente);
+	}
+
+	@Override
+	public List<Procedimiento> selectProcedimientosPendientesPorUsuarioHoy(Integer usuario_id) {
+//		LocalDateTime fechaHoraActual = LocalDateTime.now();
+//		String fechaHoraFormateada = fechaHoraActual.format(this.formatter);
+//		System.out.println(fechaHoraActual);
+//		System.out.println(fechaHoraFormateada);
+		return iProcedimientoRepository.selectProcedimientosPendientesPorUsuarioHoy(usuario_id);
 	}
 
 }

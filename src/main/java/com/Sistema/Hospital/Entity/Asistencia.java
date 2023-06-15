@@ -1,5 +1,6 @@
 package com.Sistema.Hospital.Entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -33,6 +34,10 @@ public class Asistencia {
 	@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "FK_asistencia_usuario"))
 	@NotNull
 	private Usuario usuario;
+	
+	@Column(nullable = false)
+	@NotNull
+	private LocalDate fechaAsistencia;
 
 	@Column(nullable = false)
 	@NotNull

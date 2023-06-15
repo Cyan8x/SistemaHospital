@@ -43,6 +43,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@PostMapping
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<SuccesMessageDto> createPaciente(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
 		iPacienteService.create(mapFromDtoRequestToEntity(pacienteDto));
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
@@ -52,13 +53,14 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	@GetMapping()
 	// @RequestMapping(value = "/" , method = RequestMethod.GET)
 	// @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<List<PacienteDto>> getAllPacientes() throws Exception {
 		List<PacienteDto> listaDto = iPacienteService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<PacienteDto> getPacienteById(@PathVariable(value = "id") Integer paciente_id) throws Exception {
 		Paciente paciente = iPacienteService.getById(paciente_id);
 		if (paciente == null) {
@@ -68,6 +70,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@PutMapping()
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
 		Paciente paciente = iPacienteService.getById(pacienteDto.getPaciente_id());
 		if (paciente == null) {
@@ -80,6 +83,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> deletePacienteById(@PathVariable(value = "id") Integer paciente_id) throws Exception {
 		Paciente paciente = iPacienteService.getById(paciente_id);
 		if (paciente == null) {
@@ -91,6 +95,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@GetMapping("/favoritos")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos() throws Exception {
 		List<PacienteDto> listaDto = iPacienteService.selectFavoritos().stream().map(paciente -> mapFromEntityToDto(paciente))
 				.collect(Collectors.toList());

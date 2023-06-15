@@ -1,5 +1,6 @@
 package com.Sistema.Hospital.Dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,9 @@ public class AsistenciaDto {
 	@NotNull
 	private UsuarioDto usuario;
 
+	@NotNull
+	private LocalDate fechaAsistencia;
+	
 	@NotNull
 	private LocalDateTime fechaHoraAsistencia;
 
