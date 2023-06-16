@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Sistema.Hospital.Dto.PacienteDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Paciente;
+import com.Sistema.Hospital.Entity.Usuario;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
+import com.Sistema.Hospital.Service.IUsuarioService;
 
 @RestController
 @RequestMapping("/hospital/paciente")
@@ -31,6 +33,9 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 
 	@Autowired
 	private IPacienteService iPacienteService;
+
+	@Autowired
+	private IUsuarioService iUsuarioService;
 
 	@Override
 	protected Class<Paciente> getTClass() {
@@ -94,11 +99,53 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 				.message("Paciente eliminado exitosamente.").build(), HttpStatus.OK);
 	}
 
-	@GetMapping("/favoritos")
+	@GetMapping("/favoritos/{usuario_id}")
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
-	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos() throws Exception {
-		List<PacienteDto> listaDto = iPacienteService.selectFavoritos().stream().map(paciente -> mapFromEntityToDto(paciente))
+	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos(@PathVariable(value = "usuario_id") Integer usuario_id) throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		List<PacienteDto> listaDto = iPacienteService.selectFavoritosPorUsuario(usuario_id).stream().map(paciente -> mapFromEntityToDto(paciente))
 				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+
+	@GetMapping("/insertFavoritos/{usuario_id}/{paciente_id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
+	public ResponseEntity<Integer> insertFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
+			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
+
+		Paciente paciente = iPacienteService.getById(paciente_id);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", paciente_id);
+		}
+
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+
+		Integer cantidadInsercciones = iPacienteService.insertFavoritoPorUsuario(usuario_id, paciente_id);
+		return new ResponseEntity<>(cantidadInsercciones, HttpStatus.OK);
+	}
+
+	@GetMapping("/deleteFavoritos/{usuario_id}/{paciente_id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
+	public ResponseEntity<Integer> deleteFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
+			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
+
+		Paciente paciente = iPacienteService.getById(paciente_id);
+		if (paciente == null) {
+			throw new ResourceNotFound("Paciente", "id", paciente_id);
+		}
+
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+
+		Integer cantidadDeletes = iPacienteService.deleteFavoritoPorUsuario(usuario_id, paciente_id);
+		return new ResponseEntity<>(cantidadDeletes, HttpStatus.OK);
 	}
 }

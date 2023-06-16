@@ -22,7 +22,17 @@ public class PacienteServiceImpl extends CRUDServiceImpl<Paciente, Integer> impl
 	}
 
 	@Override
-	public List<Paciente> selectFavoritos() {
-		return iPacienteRepository.selectFavoritos();
+	public List<Paciente> selectFavoritosPorUsuario(Integer usuario_id) {
+		return iPacienteRepository.selectFavoritosPorUsuario(usuario_id);
+	}
+
+	@Override
+	public Integer insertFavoritoPorUsuario(Integer usuario_id, Integer paciente_id) {
+		return iPacienteRepository.insertFavoritoPorUsuario(usuario_id, paciente_id);
+	}
+
+	@Override
+	public Integer deleteFavoritoPorUsuario(Integer usuario_id, Integer paciente_id) {
+		return iPacienteRepository.deleteFavoritoPorUsuario(usuario_id, paciente_id);
 	}
 }

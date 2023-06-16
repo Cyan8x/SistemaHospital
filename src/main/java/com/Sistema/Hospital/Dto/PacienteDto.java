@@ -49,14 +49,11 @@ public class PacienteDto {
 	
 	@NotNull(message = "Debe completar si está ACTIVO o no el paciente.")
 	private Boolean esActivo;
-
-	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
-	private Boolean esFavorito;
 	
-	@NotNull(message = "Debe completar la FECHA CREACION del paciente.")
+//	@NotNull(message = "Debe completar la FECHA CREACION del paciente.")
 	private LocalDateTime fechaCreacionPaciente;
 
-	@NotNull
+	@NotNull(message = "El campo USUARIO creador del paciente no debe estar vacío.")
 	private UsuarioDto usuario;
 	
 	@NotNull(message = "El campo ESTADO ATENCION del paciente no debe estar vacío.")

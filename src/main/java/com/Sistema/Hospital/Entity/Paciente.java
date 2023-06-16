@@ -1,6 +1,7 @@
 package com.Sistema.Hospital.Entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -76,12 +79,8 @@ public class Paciente {
 	@NotNull(message = "Debe completar si está ACTIVO o no el paciente.")
 	private Boolean esActivo;
 
-	@Column(nullable = false)
-	@NotNull(message = "Debe completar si es FAVORITO o no el paciente.")
-	private Boolean esFavorito;
-
-	@Column(nullable = false)
-	@NotNull(message = "Debe completar la FECHA CREACION del paciente.")
+	@Column(nullable = true)
+	// @NotNull(message = "Debe completar la FECHA CREACION del paciente.")
 	private LocalDateTime fechaCreacionPaciente;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -93,4 +92,8 @@ public class Paciente {
 	@JoinColumn(name = "estado_atencion_id", referencedColumnName = "estado_atencion_id", nullable = false, foreignKey = @ForeignKey(name = "FK_paciente_estadoatencion"))
 	@NotNull
 	private EstadoAtencion estadoAtencion;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "pacientefavorito_usuario", joinColumns = @JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"))
+	private List<Paciente> pacientesFavoritos;
 }

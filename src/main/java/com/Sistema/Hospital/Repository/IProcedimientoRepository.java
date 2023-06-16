@@ -1,6 +1,5 @@
 package com.Sistema.Hospital.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
