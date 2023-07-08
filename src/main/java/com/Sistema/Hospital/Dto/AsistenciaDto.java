@@ -29,6 +29,9 @@ public class AsistenciaDto {
 
 	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionTardanza;
+	
+	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
+	private String justificacionFalta;
 
 	@NotNull
 	private EstadoAsistenciaDto estadoAsistencia;

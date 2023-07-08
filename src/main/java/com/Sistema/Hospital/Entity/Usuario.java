@@ -4,15 +4,18 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -33,7 +36,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "usuarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "usuario" }), @UniqueConstraint(columnNames = { "dniUsuario" }) })
 
-public class Usuario { 
+public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
@@ -75,15 +78,23 @@ public class Usuario {
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar si está activo o no el usuario.")
 	private Boolean esActivoUsuario;
-	
+
 	@Column(nullable = false)
 	@NotNull(message = "Debe completar la FECHA CREACION del usuario.")
 	private LocalDateTime fechaCreacionUsuario;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "rol_id"))
-	private List<Rol> roles;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "rol_id", referencedColumnName = "rol_id", nullable = false, foreignKey = @ForeignKey(name = "FK_usuario_rol"))
+	@NotNull
+	private Rol rol;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinTable(name = "usuario_menu", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "menu_id"))
+	private List<Menu> menus;
 	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuariosFavoritos")
+	private List<Paciente> pacientesFavoritos;
+
 	@Column(nullable = false)
 	private Boolean esActivoLunes;
 	@Column(nullable = false)

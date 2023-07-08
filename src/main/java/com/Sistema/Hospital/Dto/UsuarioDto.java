@@ -25,7 +25,6 @@ public class UsuarioDto {
 	private String usuario;
 
 	@NotBlank(message = "El campo PASSWORD no debe estar vacío.")
-	@Length(min = 5, max = 30, message = "El campo PASSWORD tiene que contener 5 a 30 carácteres.")
 	private String password;
 
 	@NotBlank(message = "El campo NOMBRE no debe estar vacío.")
@@ -52,6 +51,9 @@ public class UsuarioDto {
 	
 	@NotNull(message = "Debe completar la FECHA CREACION del usuario.")
 	private LocalDateTime fechaCreacionUsuario;
+	
+	@NotNull
+	private RolDto rol;
 
 	private Boolean esActivoLunes = true;
 	private Boolean esActivoMartes = true;

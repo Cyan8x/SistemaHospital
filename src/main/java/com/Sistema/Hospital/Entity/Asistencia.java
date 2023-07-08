@@ -46,6 +46,10 @@ public class Asistencia {
 	@Column(nullable = true, length = 500)
 	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
 	private String justificacionTardanza;
+	
+	@Column(nullable = true, length = 500)
+	@Length(min = 1, max = 500, message = "El campo JUSTIFICACIÓN tiene que tener de 1 a 500 carácteres.")
+	private String justificacionFalta;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_asistencia_id", referencedColumnName = "estado_asistencia_id", nullable = false, foreignKey = @ForeignKey(name = "FK_asistencia_estadoasistencia"))

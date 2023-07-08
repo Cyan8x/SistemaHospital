@@ -1,13 +1,11 @@
-com\Sistema\Hospital\Service\IFaltaService.class
 com\Sistema\Hospital\Service\IRolService.class
 com\Sistema\Hospital\Repository\IPacienteRepository.class
 com\Sistema\Hospital\Repository\IUsuarioRepository.class
 com\Sistema\Hospital\Service\IPacienteService.class
-com\Sistema\Hospital\Repository\IFaltaRepository.class
+com\Sistema\Hospital\Config\AsistenciaSchedulerConfig$1.class
+com\Sistema\Hospital\Service\Impl\UsuarioServiceImpl$1.class
 com\Sistema\Hospital\Dto\ErrorsFromBadRequestDto.class
 com\Sistema\Hospital\Dto\SuccesMessageDto$SuccesMessageDtoBuilder.class
-com\Sistema\Hospital\Entity\Falta.class
-com\Sistema\Hospital\Config\Security\WebSecurityConfig.class
 com\Sistema\Hospital\Entity\Comentario.class
 com\Sistema\Hospital\Dto\SuccesMessageDto.class
 com\Sistema\Hospital\Controller\EstadoAtencionController.class
@@ -25,12 +23,12 @@ com\Sistema\Hospital\Repository\IRolRepository.class
 com\Sistema\Hospital\Entity\Asistencia.class
 com\Sistema\Hospital\HospitalApplication.class
 com\Sistema\Hospital\Dto\UsuarioDto.class
-com\Sistema\Hospital\Dto\FaltaDto.class
 com\Sistema\Hospital\Controller\UsuarioController.class
 com\Sistema\Hospital\Service\Impl\CRUDServiceImpl.class
 com\Sistema\Hospital\Exception\ControllerAdvice.class
 com\Sistema\Hospital\Service\ICRUDService.class
 com\Sistema\Hospital\Entity\Menu.class
+com\Sistema\Hospital\Service\Impl\AsistenciaServiceImpl$1.class
 com\Sistema\Hospital\Dto\ErrorMessageDto$ErrorMessageDtoBuilder.class
 com\Sistema\Hospital\Dto\RolDto.class
 com\Sistema\Hospital\Controller\PacienteController.class
@@ -45,5 +43,4 @@ com\Sistema\Hospital\Config\ModelMapperConfig.class
 com\Sistema\Hospital\Entity\Paciente.class
 com\Sistema\Hospital\Service\Impl\PacienteServiceImpl.class
 com\Sistema\Hospital\Controller\RolController.class
-com\Sistema\Hospital\Service\Impl\FaltaServiceImpl.class
 com\Sistema\Hospital\Entity\Rol.class

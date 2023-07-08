@@ -20,7 +20,7 @@ public class AuthServiceImpl {
 				break;
 
 			case "listarId":
-				metodoRol = "ADMIN,USER,DBA";
+				metodoRol = "ADMIN,USER";
 				break;
 		}
 
@@ -28,7 +28,7 @@ public class AuthServiceImpl {
 
 		Authentication usuarioLogueado = SecurityContextHolder.getContext().getAuthentication();
 
-		System.out.println(usuarioLogueado.getName());
+//		System.out.println(usuarioLogueado.getName());
 
 		for (GrantedAuthority auth : usuarioLogueado.getAuthorities()) {
 			String rolUser = auth.getAuthority();

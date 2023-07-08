@@ -1,10 +1,7 @@
 package com.Sistema.Hospital.Dto;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +24,4 @@ public class MenuDto {
 	@Column(nullable = false, length = 50)
 	@NotBlank(message = "El campo URL del menu no debe estar vacío.")
 	private String urlMenu;
-	
-	@NotNull
-	private List<RolDto> roles;
 }

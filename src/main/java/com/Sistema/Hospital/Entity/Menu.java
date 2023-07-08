@@ -4,12 +4,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -49,8 +46,7 @@ public class Menu {
 	@NotBlank(message = "El campo URL del menu no debe estar vacío.")
 	@Length(min = 1, max = 50, message = "El campo URL debe tener de 1 a 50 carácteres.")
 	private String urlMenu;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "menu_rol", joinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "menu_id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "rol_id"))
-	private List<Rol> roles;
+	
+	@ManyToMany(mappedBy = "menus")
+    private List<Usuario> usuarios;
 }

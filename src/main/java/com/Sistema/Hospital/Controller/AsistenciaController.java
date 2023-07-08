@@ -2,12 +2,14 @@ package com.Sistema.Hospital.Controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Sistema.Hospital.Dto.AsistenciaDto;
+import com.Sistema.Hospital.Dto.JustificacionTardanzaDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Asistencia;
 import com.Sistema.Hospital.Entity.Usuario;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IAsistenciaService;
 import com.Sistema.Hospital.Service.IUsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/hospital/asistencia")
@@ -55,9 +59,24 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 
 	@GetMapping()
 	public ResponseEntity<List<AsistenciaDto>> getAllAsistencias() throws Exception {
-		List<AsistenciaDto> listaDto = iAsistenciaService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente))
+		List<AsistenciaDto> listaDto = iAsistenciaService.getAll().stream().map(asistencia -> mapFromEntityToDto(asistencia))
 				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/usuario/{id}")
+	public ResponseEntity<List<AsistenciaDto>> getAllAsistenciasOfUsuario(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+		List<AsistenciaDto> listaDto = iAsistenciaService.asistenciasOfUsuario(usuario_id).stream().map(asistencia-> mapFromEntityToDto(asistencia))
+				.collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/cantAsistUser/{id}")
+	public ResponseEntity<String> cantidadAsistenciasPorEstado(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+		Map<String, Integer> contadorAsistenciasUsuario = iAsistenciaService.cantidadAsistenciasPorEstado(usuario_id);
+		ObjectMapper mapper = new ObjectMapper();
+	    String json = mapper.writeValueAsString(contadorAsistenciasUsuario);
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -115,4 +134,28 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
 				.message(respuestaRegistro).build(), HttpStatus.CREATED);
 	}
+	
+	@PutMapping("/justificarTardanza")
+	public ResponseEntity<SuccesMessageDto> justificarTardanza(@RequestBody @Valid JustificacionTardanzaDto justificacionTardanzaDto) throws Exception {
+		Usuario usuario = iUsuarioService.getById(justificacionTardanzaDto.getUsuario_id());
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", justificacionTardanzaDto.getUsuario_id());
+		}
+
+		String respJustificacion = iAsistenciaService.justificarTardanza(justificacionTardanzaDto);
+		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
+				.message(respJustificacion).build(), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/genReportAsist/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> generarReporteAsistenciaUsuario(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+		Usuario usuario = iUsuarioService.getById(usuario_id);
+		if (usuario == null) {
+			throw new ResourceNotFound("Usuario", "id", usuario_id);
+		}
+		byte[] data = null;
+		data = iAsistenciaService.generarReporteAsistenciaUsuario(usuario);
+		return new ResponseEntity<>(data, HttpStatus.OK);
+	}
+	
 }

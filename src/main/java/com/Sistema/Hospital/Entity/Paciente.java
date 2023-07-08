@@ -95,5 +95,5 @@ public class Paciente {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pacientefavorito_usuario", joinColumns = @JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"))
-	private List<Paciente> pacientesFavoritos;
+	private List<Usuario> usuariosFavoritos;
 }

@@ -2,6 +2,7 @@ package com.Sistema.Hospital.Controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import com.Sistema.Hospital.Entity.Usuario;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
 import com.Sistema.Hospital.Service.IUsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/hospital/paciente")
@@ -111,7 +113,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/insertFavoritos/{usuario_id}/{paciente_id}")
+	@PostMapping("/insertFavoritos/{usuario_id}/{paciente_id}")
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<Integer> insertFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
 			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
@@ -130,7 +132,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 		return new ResponseEntity<>(cantidadInsercciones, HttpStatus.OK);
 	}
 
-	@GetMapping("/deleteFavoritos/{usuario_id}/{paciente_id}")
+	@DeleteMapping("/deleteFavoritos/{usuario_id}/{paciente_id}")
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<Integer> deleteFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
 			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
@@ -147,5 +149,13 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 
 		Integer cantidadDeletes = iPacienteService.deleteFavoritoPorUsuario(usuario_id, paciente_id);
 		return new ResponseEntity<>(cantidadDeletes, HttpStatus.OK);
+	}
+	
+	@GetMapping("/cantPacieEstado")
+	public ResponseEntity<String> cantidadPacientesPorEstado() throws Exception {
+		Map<String, Integer> contadorPacientesPorEstado = iPacienteService.cantidadPacientesPorEstado();
+		ObjectMapper mapper = new ObjectMapper();
+	    String json = mapper.writeValueAsString(contadorPacientesPorEstado);
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 }

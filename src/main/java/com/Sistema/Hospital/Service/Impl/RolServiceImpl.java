@@ -18,4 +18,9 @@ public class RolServiceImpl extends CRUDServiceImpl<Rol, Integer> implements IRo
 	protected IGENERICRepository<Rol, Integer> getRepo() {
 		return iRolRepository;
 	}
+
+//	@Override
+//	public List<Rol> selectRolesFromUsuario(Integer usuario_id) {
+//		return iRolRepository.selectRolesFromUsuario(usuario_id);
+//	}
 }

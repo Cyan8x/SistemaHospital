@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,12 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 
 	@Autowired
 	private IUsuarioService iUsuarioService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	ModelMapper mapper;
 
 	@Override
 	protected Class<Usuario> getTClass() {
@@ -43,6 +51,8 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 
 	@PostMapping
 	public ResponseEntity<SuccesMessageDto> createUsuario(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
+		String passwordEncriptada = passwordEncoder.encode(usuarioDto.getPassword());
+		usuarioDto.setPassword(passwordEncriptada);
 		iUsuarioService.create(mapFromDtoRequestToEntity(usuarioDto));
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
 				.message("Usuario creado exitosamente.").build(), HttpStatus.CREATED);
@@ -63,6 +73,28 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 		return new ResponseEntity<>(mapFromEntityToDto(usuario), HttpStatus.OK);
 	}
 	
+//	@GetMapping("/roles/{id}")
+//	public ResponseEntity<List<RolDto>> getRolesFromUsuario(@PathVariable(value = "id") Integer usuario_id) throws Exception {
+//		Usuario usuario = iUsuarioService.getById(usuario_id);
+//		if (usuario == null) {
+//			throw new ResourceNotFound("Usuario", "id", usuario_id);
+//		}
+//		List<Rol> rolesUsuario = iUsuarioService.getRolesFromUsuario(usuario_id);
+//		return new ResponseEntity<>(rolesUsuario.stream().map(rol-> mapper.map(rol, RolDto.class)).collect(Collectors.toList()), HttpStatus.OK);
+//	}
+//	
+//	@PostMapping("/agregarRoles/{id}")
+//	public ResponseEntity<SuccesMessageDto> asignarRolesUsuario(@PathVariable(value = "id") Integer usuario_id, @RequestBody @Valid List<RolDto> rolesDto) throws Exception {
+//		Usuario usuario = iUsuarioService.getById(usuario_id);
+//		if (usuario == null) {
+//			throw new ResourceNotFound("Usuario", "id", usuario_id);
+//		}
+//		List<Rol> rolesUsuario = rolesDto.stream().map(rolDto -> mapper.map(rolDto, Rol.class)).collect(Collectors.toList());
+//		iUsuarioService.agregarRolesAUsuario(usuario_id,rolesUsuario);
+//		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
+//				.message("Se asgignaron correctamente los roles.").build(), HttpStatus.CREATED);
+//	}
+	
 	@GetMapping("/porUsername/{username}")
 	public ResponseEntity<UsuarioDto> getUsuarioByUserName(@PathVariable(value = "username") String username) throws Exception {
 		Usuario usuario = iUsuarioService.findOneByUsuario(username);
@@ -78,7 +110,15 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 		if (usuario == null) {
 			throw new ResourceNotFound("Usuario", "id", usuarioDto.getUsuario_id());
 		}
-		iUsuarioService.update(mapFromDtoRequestToEntity(usuarioDto));
+		
+		if (!usuarioDto.getPassword().startsWith("$2a$")) {
+	        // Encriptar la nueva contraseña
+	        String nuevaContrasenaEncriptada = passwordEncoder.encode(usuarioDto.getPassword());
+	        usuarioDto.setPassword(nuevaContrasenaEncriptada);
+	    }
+		
+		iUsuarioService.updateUsuario(mapFromDtoRequestToEntity(usuarioDto));
+		
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message("Usuario actualizado exitosamente.").build(), HttpStatus.OK);
 	}
