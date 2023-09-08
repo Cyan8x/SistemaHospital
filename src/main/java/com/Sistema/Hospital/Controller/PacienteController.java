@@ -24,6 +24,8 @@ import com.Sistema.Hospital.Dto.PacienteDto;
 import com.Sistema.Hospital.Dto.SuccesMessageDto;
 import com.Sistema.Hospital.Entity.Paciente;
 import com.Sistema.Hospital.Entity.Usuario;
+import com.Sistema.Hospital.Exception.AttributeNotHaveToBeNull;
+import com.Sistema.Hospital.Exception.ResourceAlreadyExist;
 import com.Sistema.Hospital.Exception.ResourceNotFound;
 import com.Sistema.Hospital.Service.IPacienteService;
 import com.Sistema.Hospital.Service.IUsuarioService;
@@ -52,6 +54,16 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	@PostMapping
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<SuccesMessageDto> createPaciente(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
+		List<Paciente> pacientes = iPacienteService.validarExistenciaPacientePorDocumento(pacienteDto.getDniPaciente(), pacienteDto.getCarneExtranjeria());
+		if(pacienteDto.getDniPaciente() == null && pacienteDto.getCarneExtranjeria() == null) {
+			throw new AttributeNotHaveToBeNull("DNI o CARNE DE EXTRANJERIA");
+		}
+		if (pacientes.size()>0) {
+			if(pacienteDto.getDniPaciente() == null) {
+				throw new ResourceAlreadyExist("Paciente", "Carne Extranjeria", pacienteDto.getCarneExtranjeria());
+			}
+			throw new ResourceAlreadyExist("Paciente", "DNI", pacienteDto.getDniPaciente());
+		}
 		iPacienteService.create(mapFromDtoRequestToEntity(pacienteDto));
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
 				.message("Paciente creado exitosamente.").build(), HttpStatus.CREATED);
@@ -63,6 +75,13 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<List<PacienteDto>> getAllPacientes() throws Exception {
 		List<PacienteDto> listaDto = iPacienteService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/activos")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
+	public ResponseEntity<List<PacienteDto>> getAllPacientesActivos() throws Exception {
+		List<PacienteDto> listaDto = iPacienteService.selectPacientesActivos().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 

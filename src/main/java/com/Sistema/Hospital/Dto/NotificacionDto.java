@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.Sistema.Hospital.Entity.Paciente;
-import com.Sistema.Hospital.Entity.Usuario;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,13 +20,13 @@ public class NotificacionDto {
 	private Integer notificacion_id;
 
 	@NotNull
-	private Usuario usuarioOrigen;
+	private UsuarioDto usuarioOrigen;
 
 	@NotNull
 	private Integer usuarioDestino;
 
 	@NotNull
-	private Paciente paciente;
+	private ProcedimientoDto procedimiento;
 
 	@NotBlank(message = "El campo CAUSA no debe estar vacío.")
 	@Length(min = 1, max = 500, message = "El campo CAUSA debe contener entre 1 a 500 carácteres.")

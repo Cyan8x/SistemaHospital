@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -96,4 +97,9 @@ public class Paciente {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pacientefavorito_usuario", joinColumns = @JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id"))
 	private List<Usuario> usuariosFavoritos;
+	
+	@AssertTrue(message = "Debe proporcionar DNI o Carné de Extranjería")
+    public boolean isDniOrCarneExtranjeriaProvided() {
+        return dniPaciente != null || carneExtranjeria != null;
+    }
 }

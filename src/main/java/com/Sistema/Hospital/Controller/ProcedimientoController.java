@@ -55,10 +55,9 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 	}
 
 	@PostMapping
-	public ResponseEntity<SuccesMessageDto> createProcedimiento(@RequestBody @Valid ProcedimientoDto procedimientoDto) throws Exception {
-		iProcedimientoService.create(mapFromDtoRequestToEntity(procedimientoDto));
-		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
-				.message("Procedimiento creado exitosamente.").build(), HttpStatus.CREATED);
+	public ResponseEntity<ProcedimientoDto> createProcedimiento(@RequestBody @Valid ProcedimientoDto procedimientoDto) throws Exception {
+		Procedimiento proced = iProcedimientoService.create(mapFromDtoRequestToEntity(procedimientoDto));
+		return new ResponseEntity<>(mapFromEntityToDto(proced), HttpStatus.CREATED);
 	}
 
 	@GetMapping()
@@ -78,15 +77,14 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 	}
 
 	@PutMapping()
-	public ResponseEntity<SuccesMessageDto> updateProcedimientoById(@RequestBody @Valid ProcedimientoDto procedimientoDto) throws Exception {
+	public ResponseEntity<ProcedimientoDto> updateProcedimientoById(@RequestBody @Valid ProcedimientoDto procedimientoDto) throws Exception {
 		Procedimiento procedimiento = iProcedimientoService.getById(procedimientoDto.getProcedimiento_id());
 		if (procedimiento == null) {
 			throw new ResourceNotFound("Procedimiento", "id", procedimientoDto.getProcedimiento_id());
 		}
 
-		iProcedimientoService.update(mapFromDtoRequestToEntity(procedimientoDto));
-		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
-				.message("Procedimiento actualizado exitosamente.").build(), HttpStatus.OK);
+		Procedimiento newProced = iProcedimientoService.update(mapFromDtoRequestToEntity(procedimientoDto));
+		return new ResponseEntity<>(mapFromEntityToDto(newProced), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")

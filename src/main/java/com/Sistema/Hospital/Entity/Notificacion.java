@@ -40,13 +40,13 @@ public class Notificacion {
 	private Integer usuarioDestino;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id", nullable = false, foreignKey = @ForeignKey(name = "FK_notificacion_paciente"))
+	@JoinColumn(name = "procedimiento_id", referencedColumnName = "procedimiento_id", nullable = false, foreignKey = @ForeignKey(name = "FK_notificacion_procedimiento"))
 	@NotNull
-	private Paciente paciente;
+	private Procedimiento procedimiento;
 	
 	@Column(nullable = false, length = 500)
 	@NotBlank(message = "El campo CAUSA no debe estar vacío.")
-	@Length(min = 1, max = 500, message = "El campo CAUSA debe contener entre 1 a 500 carácteres.")
+	@Length(min = 1, max = 100, message = "El campo CAUSA debe contener entre 1 a 100 carácteres.")
 	private String causa;
 
 	@Column(nullable = false)

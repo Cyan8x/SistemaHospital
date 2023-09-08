@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.Sistema.Hospital.HospitalApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.409 s - in com.Sistema.Hospital.HospitalApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.372 s - in com.Sistema.Hospital.HospitalApplicationTests

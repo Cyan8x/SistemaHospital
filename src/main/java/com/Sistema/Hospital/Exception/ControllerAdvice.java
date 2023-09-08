@@ -52,4 +52,28 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler{
 
 		return new ResponseEntity<>(errorsFromBadRequestDto, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ResourceAlreadyExist.class)
+    public ResponseEntity<ErrorMessageDto> resourceAlreadyExistExceptionHandler(ResourceAlreadyExist ex, WebRequest request) {
+        ErrorMessageDto errorMessageDto = ErrorMessageDto.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .timestamp(new Date())
+                .message(ex.getMessage())
+                .description(request.getDescription(false))
+                .build();
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+    }
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AttributeNotHaveToBeNull.class)
+    public ResponseEntity<ErrorMessageDto> attributeNotHaveToBeNullExceptionHandler(AttributeNotHaveToBeNull ex, WebRequest request) {
+        ErrorMessageDto errorMessageDto = ErrorMessageDto.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .timestamp(new Date())
+                .message(ex.getMessage())
+                .description(request.getDescription(false))
+                .build();
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+    }
 }

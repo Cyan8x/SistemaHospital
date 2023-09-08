@@ -34,6 +34,7 @@ D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\Impl\E
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Entity\Notificacion.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Dto\ComentarioDto.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\IEstadoAtencionService.java
+D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Exception\AttributeNotHaveToBeNull.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\Impl\AuthServiceImpl.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Controller\ProcedimientoController.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Config\UsuarioActualizadoEvent.java
@@ -78,6 +79,7 @@ D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Dto\PacienteDt
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Exception\ResourceNotFound.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\Impl\PacienteServiceImpl.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\Impl\AsistenciaServiceImpl.java
+D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Exception\ResourceAlreadyExist.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Repository\INotificacionRepository.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Repository\IEstadoAtencionRepository.java
 D:\SPRING TOOL\SistemaHospital\src\main\java\com\Sistema\Hospital\Service\Impl\MenuServiceImpl.java

@@ -37,9 +37,9 @@ public class ProcedimientoDto {
 	@Length(min = 3, max = 50)
 	private String usuario_creador;
 	
-	@NotNull
+	@NotNull(message = "El campo FECHA INICIO no tiene que estar vacío.")
 	private LocalDateTime fechaHoraInicio;
 	
-	@NotNull
+	@NotNull(message = "El campo FECHA FIN no tiene que estar vacío.")
 	private LocalDateTime fechaHoraFin;
 }

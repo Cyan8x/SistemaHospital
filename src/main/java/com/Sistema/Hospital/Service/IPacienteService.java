@@ -14,4 +14,8 @@ public interface IPacienteService extends ICRUDService<Paciente, Integer> {
 	Integer deleteFavoritoPorUsuario(Integer usuario_id, Integer paciente_id);
 
 	Map<String, Integer> cantidadPacientesPorEstado();
+	
+	List<Paciente> selectPacientesActivos();
+	
+	List<Paciente> validarExistenciaPacientePorDocumento(String dni, String ce);
 }

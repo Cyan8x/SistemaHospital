@@ -1,13 +1,10 @@
 package com.Sistema.Hospital.Entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
@@ -46,7 +43,4 @@ public class Menu {
 	@NotBlank(message = "El campo URL del menu no debe estar vacío.")
 	@Length(min = 1, max = 50, message = "El campo URL debe tener de 1 a 50 carácteres.")
 	private String urlMenu;
-	
-	@ManyToMany(mappedBy = "menus")
-    private List<Usuario> usuarios;
 }

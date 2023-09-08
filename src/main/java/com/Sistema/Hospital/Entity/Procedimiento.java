@@ -58,10 +58,10 @@ public class Procedimiento {
 	private String usuario_creador;
 	
 	@Column(nullable = false)
-	@NotNull
+	@NotNull(message = "El campo FECHA INICIO no tiene que estar vacío.")
 	private LocalDateTime fechaHoraInicio;
 	
 	@Column(nullable = false)
-	@NotNull
+	@NotNull(message = "El campo FECHA FIN no tiene que estar vacío.")
 	private LocalDateTime fechaHoraFin;
 }

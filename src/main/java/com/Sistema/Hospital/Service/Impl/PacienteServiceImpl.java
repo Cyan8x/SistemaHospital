@@ -61,4 +61,14 @@ public class PacienteServiceImpl extends CRUDServiceImpl<Paciente, Integer> impl
 
 	    return contadores;
 	}
+
+	@Override
+	public List<Paciente> selectPacientesActivos() {
+		return iPacienteRepository.selectPacientesActivos();
+	}
+
+	@Override
+	public List<Paciente> validarExistenciaPacientePorDocumento(String dni, String ce) {
+		return iPacienteRepository.validarExistenciaPacientePorDocumento(dni, ce);
+	}
 }
