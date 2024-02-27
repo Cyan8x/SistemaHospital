@@ -1,4 +1,4 @@
-package com.Sistema.Hospital.Dto;
+package com.ventasx.SistemaVentas.Exception;
 
 import java.util.Date;
 import java.util.Map;

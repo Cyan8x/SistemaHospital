@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.Sistema.Hospital.Entity.Paciente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IPacienteService extends ICRUDService<Paciente, Integer> {
 
@@ -16,6 +18,8 @@ public interface IPacienteService extends ICRUDService<Paciente, Integer> {
 	Map<String, Integer> cantidadPacientesPorEstado();
 	
 	List<Paciente> selectPacientesActivos();
+
+	Page<Paciente> selectPacientesActivosPagination(Pageable pageable);
 	
 	List<Paciente> validarExistenciaPacientePorDocumento(String dni, String ce);
 }

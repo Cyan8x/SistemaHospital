@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +56,6 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@PostMapping
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<SuccesMessageDto> createPaciente(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
 		List<Paciente> pacientes = iPacienteService.validarExistenciaPacientePorDocumento(pacienteDto.getDniPaciente(), pacienteDto.getCarneExtranjeria());
 		if(pacienteDto.getDniPaciente() == null && pacienteDto.getCarneExtranjeria() == null) {
@@ -69,24 +72,27 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 				.message("Paciente creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
+	@GetMapping("/pagination")
 	// @RequestMapping(value = "/" , method = RequestMethod.GET)
 	// @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
-	public ResponseEntity<List<PacienteDto>> getAllPacientes() throws Exception {
-		List<PacienteDto> listaDto = iPacienteService.getAll().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
+	public ResponseEntity<Page<PacienteDto>> getAllPacientes(@PageableDefault(sort = "fechaCreacionPaciente", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+		Page<PacienteDto> listaDto = iPacienteService.getAllPagination(pageable).map(paciente -> mapFromEntityToDto(paciente));
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 	
 	@GetMapping("/activos")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<List<PacienteDto>> getAllPacientesActivos() throws Exception {
 		List<PacienteDto> listaDto = iPacienteService.selectPacientesActivos().stream().map(paciente -> mapFromEntityToDto(paciente)).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
+	@GetMapping("/activosPagination")
+	public ResponseEntity<Page<PacienteDto>> getAllPacientesActivosPagination(Pageable pageable) throws Exception {
+		Page<PacienteDto> listaDto = iPacienteService.selectPacientesActivosPagination(pageable).map(paciente -> mapFromEntityToDto(paciente));
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+	}
+
 	@GetMapping("/{id}")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<PacienteDto> getPacienteById(@PathVariable(value = "id") Integer paciente_id) throws Exception {
 		Paciente paciente = iPacienteService.getById(paciente_id);
 		if (paciente == null) {
@@ -96,7 +102,7 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@PutMapping()
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> updatePacienteById(@RequestBody @Valid PacienteDto pacienteDto) throws Exception {
 		Paciente paciente = iPacienteService.getById(pacienteDto.getPaciente_id());
 		if (paciente == null) {
@@ -121,7 +127,6 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@GetMapping("/favoritos/{usuario_id}")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<List<PacienteDto>> getPacientesFavoritos(@PathVariable(value = "usuario_id") Integer usuario_id) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuario_id);
 		if (usuario == null) {
@@ -133,7 +138,6 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@PostMapping("/insertFavoritos/{usuario_id}/{paciente_id}")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<Integer> insertFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
 			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
 
@@ -152,7 +156,6 @@ public class PacienteController extends MAPPERBetweenDtoAndEntity<PacienteDto, P
 	}
 
 	@DeleteMapping("/deleteFavoritos/{usuario_id}/{paciente_id}")
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
 	public ResponseEntity<Integer> deleteFavoritoPorUsuario(@PathVariable(value = "usuario_id") Integer usuario_id,
 			@PathVariable(value = "paciente_id") Integer paciente_id) throws Exception {
 

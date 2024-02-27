@@ -1,5 +1,8 @@
 package com.Sistema.Hospital.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface ICRUDService<T, ID> {
@@ -18,6 +21,7 @@ public interface ICRUDService<T, ID> {
 
 	List<T> getAll() throws Exception;
 
+	Page<T> getAllPagination(Pageable pageable) throws Exception;
 	T getById(ID id) throws Exception;
 
 	T update(T t) throws Exception;

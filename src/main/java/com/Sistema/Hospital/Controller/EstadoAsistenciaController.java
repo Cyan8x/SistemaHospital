@@ -7,8 +7,12 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,10 +55,9 @@ public class EstadoAsistenciaController extends MAPPERBetweenDtoAndEntity<Estado
 				HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	public ResponseEntity<List<EstadoAsistenciaDto>> getAllEstadoAsistencias() throws Exception {
-		List<EstadoAsistenciaDto> listaDto = iEstadoAsistenciaService.getAll().stream()
-				.map(estadoAsistencia -> mapFromEntityToDto(estadoAsistencia)).collect(Collectors.toList());
+	@GetMapping("/pagination")
+	public ResponseEntity<Page<EstadoAsistenciaDto>> getAllEstadoAsistencias(@PageableDefault(sort = "nombreEstadoAsistencia")Pageable pageable) throws Exception {
+		Page<EstadoAsistenciaDto> listaDto = iEstadoAsistenciaService.getAllPagination(pageable).map(estadoAsistencia -> mapFromEntityToDto(estadoAsistencia));
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
@@ -69,6 +72,7 @@ public class EstadoAsistenciaController extends MAPPERBetweenDtoAndEntity<Estado
 	}
 
 	@PutMapping()
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> updateEstadoAsistenciaById(
 			@RequestBody @Valid EstadoAsistenciaDto estadoAsistenciaDto) throws Exception {
 		EstadoAsistencia estadoAsistencia = iEstadoAsistenciaService
@@ -83,6 +87,7 @@ public class EstadoAsistenciaController extends MAPPERBetweenDtoAndEntity<Estado
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> deleteEstadoAsistenciaById(
 			@PathVariable(value = "id") Integer estado_asistencia_id) throws Exception {
 		EstadoAsistencia estadoAsistencia = iEstadoAsistenciaService.getById(estado_asistencia_id);

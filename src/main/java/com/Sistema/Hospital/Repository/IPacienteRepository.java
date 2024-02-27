@@ -2,6 +2,8 @@ package com.Sistema.Hospital.Repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +20,9 @@ public interface IPacienteRepository extends IGENERICRepository<Paciente, Intege
 	
 	@Query(value = "select * from pacientes where es_activo = true", nativeQuery = true)
 	List<Paciente> selectPacientesActivos();
+
+	@Query(value = "select * from pacientes where es_activo = true order by fecha_creacion_paciente desc", nativeQuery = true)
+	Page<Paciente> selectPacientesActivosPagination(Pageable pageable);
 	
 	@Query(value = "select * from pacientes where dni_paciente = CAST(:dni AS varchar) or carne_extranjeria = CAST(:ce AS varchar)", nativeQuery = true)
 	List<Paciente> validarExistenciaPacientePorDocumento(@Param("dni") String dni, @Param("ce") String ce);

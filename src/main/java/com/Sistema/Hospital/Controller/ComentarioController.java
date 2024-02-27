@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,12 +56,11 @@ public class ComentarioController extends MAPPERBetweenDtoAndEntity<ComentarioDt
 				.message("Comentario creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	public ResponseEntity<List<ComentarioDto>> getAllComentarios() throws Exception {
-		List<ComentarioDto> listaDto = iComentarioService.getAll().stream().map(comentario -> mapFromEntityToDto(comentario))
-				.collect(Collectors.toList());
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
+//	@GetMapping()
+//	public ResponseEntity<Page<ComentarioDto>> getAllComentarios(Pageable pageable) throws Exception {
+//		Page<ComentarioDto> listaDto = iComentarioService.getAll(pageable).map(comentario -> mapFromEntityToDto(comentario));
+//		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+//	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ComentarioDto> getComentarioById(@PathVariable(value = "id") Integer comentario_id) throws Exception {

@@ -8,9 +8,14 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,20 +62,19 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 				.message("Asistencia creado exitosamente.").build(), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	public ResponseEntity<List<AsistenciaDto>> getAllAsistencias() throws Exception {
-		List<AsistenciaDto> listaDto = iAsistenciaService.getAll().stream().map(asistencia -> mapFromEntityToDto(asistencia))
-				.collect(Collectors.toList());
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
-	
+//	@GetMapping()
+//	public ResponseEntity<Page<AsistenciaDto>> getAllAsistencias(@PageableDefault(sort = "fechaAsistencia", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+//		Page<AsistenciaDto> listaDto = iAsistenciaService.getAll(pageable).map(asistencia -> mapFromEntityToDto(asistencia));
+//		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+//	}
+
 	@GetMapping("/usuario/{id}")
 	public ResponseEntity<List<AsistenciaDto>> getAllAsistenciasOfUsuario(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		List<AsistenciaDto> listaDto = iAsistenciaService.asistenciasOfUsuario(usuario_id).stream().map(asistencia-> mapFromEntityToDto(asistencia))
 				.collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/cantAsistUser/{id}")
 	public ResponseEntity<String> cantidadAsistenciasPorEstado(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		Map<String, Integer> contadorAsistenciasUsuario = iAsistenciaService.cantidadAsistenciasPorEstado(usuario_id);
@@ -89,6 +93,7 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 	}
 
 	@PutMapping()
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> updateAsistenciaById(@RequestBody @Valid AsistenciaDto asistenciaDto) throws Exception {
 		Asistencia paciente = iAsistenciaService.getById(asistenciaDto.getAsistencia_id());
 		if (paciente == null) {
@@ -101,6 +106,7 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> deleteAsistenciaById(@PathVariable(value = "id") Integer asistencia_id) throws Exception {
 		Asistencia paciente = iAsistenciaService.getById(asistencia_id);
 		if (paciente == null) {
@@ -127,14 +133,14 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 					.message("NO => El usuario no ha registrado asistencia hoy.").build(), HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/registrarConValid/{usuarioId}")
 	public ResponseEntity<SuccesMessageDto> registrarAsistenciaConValidaciones(@PathVariable(value = "usuarioId") Integer usuario_id) throws Exception {
 		String respuestaRegistro = iAsistenciaService.registrarAsistenciaConValidaciones(usuario_id);
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
 				.message(respuestaRegistro).build(), HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/justificarTardanza")
 	public ResponseEntity<SuccesMessageDto> justificarTardanza(@RequestBody @Valid JustificacionTardanzaDto justificacionTardanzaDto) throws Exception {
 		Usuario usuario = iUsuarioService.getById(justificacionTardanzaDto.getUsuario_id());
@@ -146,7 +152,7 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(new Date())
 				.message(respJustificacion).build(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/genReportAsist/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> generarReporteAsistenciaUsuario(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuario_id);
@@ -157,5 +163,5 @@ public class AsistenciaController extends MAPPERBetweenDtoAndEntity<AsistenciaDt
 		data = iAsistenciaService.generarReporteAsistenciaUsuario(usuario);
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
-	
+
 }

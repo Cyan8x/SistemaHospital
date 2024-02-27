@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,13 +58,12 @@ public class NotificacionController extends MAPPERBetweenDtoAndEntity<Notificaci
 				.message("La Notificacion fue creada exitosamente.").timestamp(new Date()).build(), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
-	public ResponseEntity<List<NotificacionDto>> getAllNotificaciones() throws Exception {
-		List<NotificacionDto> listaDto = iNotificacionService.getAll().stream().map(notificacion -> mapFromEntityToDto(notificacion))
-				.collect(Collectors.toList());
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
+//	@GetMapping()
+//	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")
+//	public ResponseEntity<Page<NotificacionDto>> getAllNotificaciones(@PageableDefault(sort = "fechaHoraNotificacion", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+//		Page<NotificacionDto> listaDto = iNotificacionService.getAll(pageable).map(notificacion -> mapFromEntityToDto(notificacion));
+//		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+//	}
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@authServiceImpl.tieneAcceso('listarId')")

@@ -8,9 +8,14 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,12 +65,11 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 		return new ResponseEntity<>(mapFromEntityToDto(proced), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	public ResponseEntity<List<ProcedimientoDto>> getAllProcedimientos() throws Exception {
-		List<ProcedimientoDto> listaDto = iProcedimientoService.getAll().stream().map(procedimientoDto -> mapFromEntityToDto(procedimientoDto))
-				.collect(Collectors.toList());
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
+//	@GetMapping()
+//	public ResponseEntity<Page<ProcedimientoDto>> getAllProcedimientos(@PageableDefault(sort = "fechaCreacionProced", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+//		Page<ProcedimientoDto> listaDto = iProcedimientoService.getAll(pageable).map(procedimientoDto -> mapFromEntityToDto(procedimientoDto));
+//		return new ResponseEntity<>(listaDto, HttpStatus.OK);
+//	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProcedimientoDto> getProcedimientoById(@PathVariable(value = "id") Integer procedimientoDto_id) throws Exception {
@@ -88,6 +92,7 @@ public class ProcedimientoController extends MAPPERBetweenDtoAndEntity<Procedimi
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> deleteProcedimientoById(@PathVariable(value = "id") Integer procedimientoDto_id) throws Exception {
 		Procedimiento procedimiento = iProcedimientoService.getById(procedimientoDto_id);
 		if (procedimiento == null) {

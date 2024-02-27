@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +53,7 @@ public class RolController extends MAPPERBetweenDtoAndEntity<RolDto, Rol> {
 
 	@GetMapping()
 	public ResponseEntity<List<RolDto>> getRolAll() throws Exception {
-		List<RolDto> listaDto = iRolService.getAll().stream().map(rol -> mapFromEntityToDto(rol)).collect(Collectors.toList());
+		List<RolDto> listaDto = iRolService.getAll().stream().map(this::mapFromEntityToDto).collect(Collectors.toList());
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 

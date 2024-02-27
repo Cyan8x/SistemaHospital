@@ -111,4 +111,9 @@ public class UsuarioServiceImpl extends CRUDServiceImpl<Usuario, Integer> implem
 
 	    return usuarioActualizado;		
 	}
+
+	@Override
+	public List<Usuario> findAllUsersExceptAdminOrderByFechaDesc() {
+		return iUsuarioRepository.findAllUsersExceptAdminOrderByFechaDesc();
+	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.Sistema.Hospital.Repository.IGENERICRepository;
 import com.Sistema.Hospital.Service.ICRUDService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public abstract class CRUDServiceImpl<T, ID> implements ICRUDService<T, ID> {
 
@@ -17,6 +19,11 @@ public abstract class CRUDServiceImpl<T, ID> implements ICRUDService<T, ID> {
 	@Override
 	public List<T> getAll() throws Exception{
 		return getRepo().findAll();
+	}
+
+	@Override
+	public Page<T> getAllPagination(Pageable pageable) throws Exception{
+		return getRepo().findAll(pageable);
 	}
 
 	@Override

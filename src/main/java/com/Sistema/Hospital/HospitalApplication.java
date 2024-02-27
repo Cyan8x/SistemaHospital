@@ -6,16 +6,16 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class HospitalApplication extends SpringBootServletInitializer { //SOLO PARA DESPLIGUE => extends SpringBootServletInitializer
+public class HospitalApplication { //SOLO PARA DESPLIGUE => extends SpringBootServletInitializer
 
 	public static void main(String[] args) {
 		SpringApplication.run(HospitalApplication.class, args);
 	}
 
 	//SOLO PARA DESPLIGUE
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(HospitalApplication.class);
-	}
+	//@Override
+	//protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+	//	return application.sources(HospitalApplication.class);
+	//}
 	//SOLO PARA DESPLIGUE
 }

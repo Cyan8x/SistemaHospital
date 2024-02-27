@@ -8,8 +8,13 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +61,12 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 		iUsuarioService.create(mapFromDtoRequestToEntity(usuarioDto));
 		return new ResponseEntity<>(SuccesMessageDto.builder().statusCode(HttpStatus.CREATED.value()).timestamp(new Date())
 				.message("Usuario creado exitosamente.").build(), HttpStatus.CREATED);
+	}
+
+	@GetMapping("/pagination")
+	public ResponseEntity<Page<UsuarioDto>> getAllUsuariosPagination(@PageableDefault(sort = "fechaCreacionUsuario", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+		Page<UsuarioDto> listaDto = iUsuarioService.getAllPagination(pageable).map(usuario -> mapFromEntityToDto(usuario));
+		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
 	@GetMapping()
@@ -105,12 +116,13 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 	}
 
 	@PutMapping()
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> updateUsuarioById(@RequestBody @Valid UsuarioDto usuarioDto) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuarioDto.getUsuario_id());
 		if (usuario == null) {
 			throw new ResourceNotFound("Usuario", "id", usuarioDto.getUsuario_id());
 		}
-		
+
 		if (!usuarioDto.getPassword().startsWith("$2a$")) {
 	        // Encriptar la nueva contraseña
 	        String nuevaContrasenaEncriptada = passwordEncoder.encode(usuarioDto.getPassword());
@@ -124,6 +136,7 @@ public class UsuarioController extends MAPPERBetweenDtoAndEntity<UsuarioDto, Usu
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
 	public ResponseEntity<SuccesMessageDto> deleteUsuarioById(@PathVariable(value = "id") Integer usuario_id) throws Exception {
 		Usuario usuario = iUsuarioService.getById(usuario_id);
 		if (usuario == null) {

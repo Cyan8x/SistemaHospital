@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.Sistema.Hospital.Entity.EstadoAtencion;
@@ -68,7 +70,13 @@ public class PacienteServiceImpl extends CRUDServiceImpl<Paciente, Integer> impl
 	}
 
 	@Override
+	public Page<Paciente> selectPacientesActivosPagination(Pageable pageable) {
+		return iPacienteRepository.selectPacientesActivosPagination(pageable);
+	}
+
+	@Override
 	public List<Paciente> validarExistenciaPacientePorDocumento(String dni, String ce) {
 		return iPacienteRepository.validarExistenciaPacientePorDocumento(dni, ce);
 	}
+
 }
